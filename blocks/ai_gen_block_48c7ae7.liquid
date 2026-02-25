@@ -1,0 +1,730 @@
+{% doc %}
+  @prompt
+    Create a Shopify custom section (Liquid) named custom-image-with-text
+    Layout:
+    2 column split layout
+    Column ratio setting: 50/50, 40/60, 60/40
+    Desktop: side by side
+    Mobile: stacked
+    
+    LEFT SECTION:
+    Image 1 (Rotating Image)
+    Image picker
+    Smooth infinite rotation animation
+    Rotation speed control (range)
+    Rotation direction (clockwise / anticlockwise)
+    Image size control
+    Position control (top/center/bottom left/right)
+    Must rotate continuously using CSS keyframes
+    Image 2 (Optional Background Image)
+    Image picker
+    Full height of left column
+    Alignment setting (left/center/right)
+    If blank → do not render (Liquid condition)
+    
+    RIGHT SECTION:
+    Subtitle (text)
+    Heading (text)
+    Richtext description
+    If any field blank → do not render
+    
+    Feature Blocks (4–5 blocks max)
+    Repeatable block:
+    Icon image
+    Feature title (ex: 100%)
+    Feature subtitle (ex: Focus)
+    Layout:
+    Icon top
+    Title
+    Subtitle
+    4 in one row desktop
+    2 per row mobile
+    If no blocks → hide section
+    
+    Extra Settings:
+    Background color
+    Text color
+    Content alignment
+    Padding top/bottom
+    Enable animation toggle
+    
+    Requirements:
+    Use proper Liquid blank conditions
+    Responsive design
+    Clean CSS inside <style>
+    Smooth premium dark style
+    
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-image-text-section-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    background-color: {{ block.settings.background_color }};
+    color: {{ block.settings.text_color }};
+    padding-top: {{ block.settings.padding_top }}px;
+    padding-bottom: {{ block.settings.padding_bottom }}px;
+  }
+
+  .ai-image-text-container-{{ ai_gen_id }} {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-image-text-grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: {% if block.settings.column_ratio == '50-50' %}1fr 1fr{% elsif block.settings.column_ratio == '40-60' %}2fr 3fr{% elsif block.settings.column_ratio == '60-40' %}3fr 2fr{% endif %};
+    gap: 40px;
+    align-items: center;
+  }
+
+  .ai-image-text-left-{{ ai_gen_id }} {
+    position: relative;
+    display: flex;
+    align-items: {{ block.settings.image_position_vertical }};
+    justify-content: {{ block.settings.image_position_horizontal }};
+    min-height: 400px;
+  }
+
+  .ai-image-text-bg-wrapper-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: {{ block.settings.bg_image_alignment }};
+    overflow: hidden;
+  }
+
+  .ai-image-text-bg-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ai-image-text-rotating-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    z-index: 1;
+    width: {{ block.settings.rotating_image_size }}px;
+    height: {{ block.settings.rotating_image_size }}px;
+  }
+
+  .ai-image-text-rotating-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    {% if block.settings.enable_animation %}
+      animation: ai-rotate-{{ ai_gen_id }} {{ block.settings.rotation_speed }}s linear infinite;
+      animation-direction: {% if block.settings.rotation_direction == 'clockwise' %}normal{% else %}reverse{% endif %};
+    {% endif %}
+  }
+
+  @keyframes ai-rotate-{{ ai_gen_id }} {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .ai-image-text-right-{{ ai_gen_id }} {
+    text-align: {{ block.settings.content_alignment }};
+  }
+
+  .ai-image-text-subtitle-{{ ai_gen_id }} {
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    opacity: 0.8;
+  }
+
+  .ai-image-text-heading-{{ ai_gen_id }} {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+
+  .ai-image-text-description-{{ ai_gen_id }} {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    opacity: 0.9;
+  }
+
+  .ai-image-text-features-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .ai-image-text-feature-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    align-items: {{ block.settings.content_alignment }};
+    gap: 8px;
+  }
+
+  .ai-image-text-feature-icon-{{ ai_gen_id }} {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    margin-bottom: 4px;
+  }
+
+  .ai-image-text-feature-title-{{ ai_gen_id }} {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .ai-image-text-feature-subtitle-{{ ai_gen_id }} {
+    font-size: 14px;
+    opacity: 0.8;
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-image-text-grid-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .ai-image-text-left-{{ ai_gen_id }} {
+      min-height: 300px;
+    }
+
+    .ai-image-text-rotating-wrapper-{{ ai_gen_id }} {
+      width: {{ block.settings.rotating_image_size | times: 0.7 }}px;
+      height: {{ block.settings.rotating_image_size | times: 0.7 }}px;
+    }
+
+    .ai-image-text-heading-{{ ai_gen_id }} {
+      font-size: 32px;
+    }
+
+    .ai-image-text-features-{{ ai_gen_id }} {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+  }
+{% endstyle %}
+
+<custom-image-text-{{ ai_gen_id }} class="ai-image-text-section-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-image-text-container-{{ ai_gen_id }}">
+    <div class="ai-image-text-grid-{{ ai_gen_id }}">
+      <div class="ai-image-text-left-{{ ai_gen_id }}">
+        {% if block.settings.background_image != blank %}
+          <div class="ai-image-text-bg-wrapper-{{ ai_gen_id }}">
+            <img
+              src="{{ block.settings.background_image | image_url: width: 1200 }}"
+              alt="{{ block.settings.background_image.alt | escape }}"
+              class="ai-image-text-bg-{{ ai_gen_id }}"
+              loading="lazy"
+              width="{{ block.settings.background_image.width }}"
+              height="{{ block.settings.background_image.height }}"
+            >
+          </div>
+        {% endif %}
+
+        {% if block.settings.rotating_image != blank %}
+          <div class="ai-image-text-rotating-wrapper-{{ ai_gen_id }}">
+            <img
+              src="{{ block.settings.rotating_image | image_url: width: 800 }}"
+              alt="{{ block.settings.rotating_image.alt | escape }}"
+              class="ai-image-text-rotating-{{ ai_gen_id }}"
+              loading="lazy"
+              width="{{ block.settings.rotating_image.width }}"
+              height="{{ block.settings.rotating_image.height }}"
+            >
+          </div>
+        {% else %}
+          <div class="ai-image-text-rotating-wrapper-{{ ai_gen_id }}">
+            <div style="width: 100%; height: 100%; background: #2a2a2a; border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0.3;">
+              {{ 'image' | placeholder_svg_tag }}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="ai-image-text-right-{{ ai_gen_id }}">
+        {% if block.settings.subtitle != blank %}
+          <div class="ai-image-text-subtitle-{{ ai_gen_id }}">{{ block.settings.subtitle }}</div>
+        {% endif %}
+
+        {% if block.settings.heading != blank %}
+          <h2 class="ai-image-text-heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+        {% endif %}
+
+        {% if block.settings.description != blank %}
+          <div class="ai-image-text-description-{{ ai_gen_id }}">{{ block.settings.description }}</div>
+        {% endif %}
+
+        {% liquid
+          assign has_features = false
+          if block.settings.feature_1_title != blank or block.settings.feature_2_title != blank or block.settings.feature_3_title != blank or block.settings.feature_4_title != blank or block.settings.feature_5_title != blank
+            assign has_features = true
+          endif
+        %}
+
+        {% if has_features %}
+          <div class="ai-image-text-features-{{ ai_gen_id }}">
+            {% if block.settings.feature_1_title != blank %}
+              <div class="ai-image-text-feature-{{ ai_gen_id }}">
+                {% if block.settings.feature_1_icon != blank %}
+                  <img
+                    src="{{ block.settings.feature_1_icon | image_url: width: 100 }}"
+                    alt="{{ block.settings.feature_1_icon.alt | escape }}"
+                    class="ai-image-text-feature-icon-{{ ai_gen_id }}"
+                    loading="lazy"
+                    width="48"
+                    height="48"
+                  >
+                {% endif %}
+                <div class="ai-image-text-feature-title-{{ ai_gen_id }}">{{ block.settings.feature_1_title }}</div>
+                {% if block.settings.feature_1_subtitle != blank %}
+                  <div class="ai-image-text-feature-subtitle-{{ ai_gen_id }}">{{ block.settings.feature_1_subtitle }}</div>
+                {% endif %}
+              </div>
+            {% endif %}
+
+            {% if block.settings.feature_2_title != blank %}
+              <div class="ai-image-text-feature-{{ ai_gen_id }}">
+                {% if block.settings.feature_2_icon != blank %}
+                  <img
+                    src="{{ block.settings.feature_2_icon | image_url: width: 100 }}"
+                    alt="{{ block.settings.feature_2_icon.alt | escape }}"
+                    class="ai-image-text-feature-icon-{{ ai_gen_id }}"
+                    loading="lazy"
+                    width="48"
+                    height="48"
+                  >
+                {% endif %}
+                <div class="ai-image-text-feature-title-{{ ai_gen_id }}">{{ block.settings.feature_2_title }}</div>
+                {% if block.settings.feature_2_subtitle != blank %}
+                  <div class="ai-image-text-feature-subtitle-{{ ai_gen_id }}">{{ block.settings.feature_2_subtitle }}</div>
+                {% endif %}
+              </div>
+            {% endif %}
+
+            {% if block.settings.feature_3_title != blank %}
+              <div class="ai-image-text-feature-{{ ai_gen_id }}">
+                {% if block.settings.feature_3_icon != blank %}
+                  <img
+                    src="{{ block.settings.feature_3_icon | image_url: width: 100 }}"
+                    alt="{{ block.settings.feature_3_icon.alt | escape }}"
+                    class="ai-image-text-feature-icon-{{ ai_gen_id }}"
+                    loading="lazy"
+                    width="48"
+                    height="48"
+                  >
+                {% endif %}
+                <div class="ai-image-text-feature-title-{{ ai_gen_id }}">{{ block.settings.feature_3_title }}</div>
+                {% if block.settings.feature_3_subtitle != blank %}
+                  <div class="ai-image-text-feature-subtitle-{{ ai_gen_id }}">{{ block.settings.feature_3_subtitle }}</div>
+                {% endif %}
+              </div>
+            {% endif %}
+
+            {% if block.settings.feature_4_title != blank %}
+              <div class="ai-image-text-feature-{{ ai_gen_id }}">
+                {% if block.settings.feature_4_icon != blank %}
+                  <img
+                    src="{{ block.settings.feature_4_icon | image_url: width: 100 }}"
+                    alt="{{ block.settings.feature_4_icon.alt | escape }}"
+                    class="ai-image-text-feature-icon-{{ ai_gen_id }}"
+                    loading="lazy"
+                    width="48"
+                    height="48"
+                  >
+                {% endif %}
+                <div class="ai-image-text-feature-title-{{ ai_gen_id }}">{{ block.settings.feature_4_title }}</div>
+                {% if block.settings.feature_4_subtitle != blank %}
+                  <div class="ai-image-text-feature-subtitle-{{ ai_gen_id }}">{{ block.settings.feature_4_subtitle }}</div>
+                {% endif %}
+              </div>
+            {% endif %}
+
+            {% if block.settings.feature_5_title != blank %}
+              <div class="ai-image-text-feature-{{ ai_gen_id }}">
+                {% if block.settings.feature_5_icon != blank %}
+                  <img
+                    src="{{ block.settings.feature_5_icon | image_url: width: 100 }}"
+                    alt="{{ block.settings.feature_5_icon.alt | escape }}"
+                    class="ai-image-text-feature-icon-{{ ai_gen_id }}"
+                    loading="lazy"
+                    width="48"
+                    height="48"
+                  >
+                {% endif %}
+                <div class="ai-image-text-feature-title-{{ ai_gen_id }}">{{ block.settings.feature_5_title }}</div>
+                {% if block.settings.feature_5_subtitle != blank %}
+                  <div class="ai-image-text-feature-subtitle-{{ ai_gen_id }}">{{ block.settings.feature_5_subtitle }}</div>
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</custom-image-text-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class CustomImageText{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+      }
+    }
+
+    customElements.define('custom-image-text-{{ ai_gen_id }}', CustomImageText{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Custom image with text",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "column_ratio",
+      "label": "Column ratio",
+      "options": [
+        {
+          "value": "50-50",
+          "label": "50 / 50"
+        },
+        {
+          "value": "40-60",
+          "label": "40 / 60"
+        },
+        {
+          "value": "60-40",
+          "label": "60 / 40"
+        }
+      ],
+      "default": "50-50"
+    },
+    {
+      "type": "header",
+      "content": "Rotating image"
+    },
+    {
+      "type": "image_picker",
+      "id": "rotating_image",
+      "label": "Rotating image"
+    },
+    {
+      "type": "range",
+      "id": "rotating_image_size",
+      "label": "Image size",
+      "min": 100,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "default": 300
+    },
+    {
+      "type": "select",
+      "id": "image_position_vertical",
+      "label": "Vertical position",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Bottom"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "image_position_horizontal",
+      "label": "Horizontal position",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_animation",
+      "label": "Enable rotation animation",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "rotation_speed",
+      "label": "Rotation speed",
+      "min": 5,
+      "max": 30,
+      "step": 5,
+      "unit": "s",
+      "default": 10
+    },
+    {
+      "type": "select",
+      "id": "rotation_direction",
+      "label": "Rotation direction",
+      "options": [
+        {
+          "value": "clockwise",
+          "label": "Clockwise"
+        },
+        {
+          "value": "anticlockwise",
+          "label": "Anticlockwise"
+        }
+      ],
+      "default": "clockwise"
+    },
+    {
+      "type": "header",
+      "content": "Background image"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "select",
+      "id": "bg_image_alignment",
+      "label": "Alignment",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Premium Quality"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Crafted with Excellence"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Discover our collection of premium products designed with attention to detail and crafted for perfection.</p>"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Feature 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "feature_1_icon",
+      "label": "Icon"
+    },
+    {
+      "type": "text",
+      "id": "feature_1_title",
+      "label": "Title",
+      "default": "100%"
+    },
+    {
+      "type": "text",
+      "id": "feature_1_subtitle",
+      "label": "Subtitle",
+      "default": "Focus"
+    },
+    {
+      "type": "header",
+      "content": "Feature 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "feature_2_icon",
+      "label": "Icon"
+    },
+    {
+      "type": "text",
+      "id": "feature_2_title",
+      "label": "Title",
+      "default": "24/7"
+    },
+    {
+      "type": "text",
+      "id": "feature_2_subtitle",
+      "label": "Subtitle",
+      "default": "Support"
+    },
+    {
+      "type": "header",
+      "content": "Feature 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "feature_3_icon",
+      "label": "Icon"
+    },
+    {
+      "type": "text",
+      "id": "feature_3_title",
+      "label": "Title",
+      "default": "5★"
+    },
+    {
+      "type": "text",
+      "id": "feature_3_subtitle",
+      "label": "Subtitle",
+      "default": "Rated"
+    },
+    {
+      "type": "header",
+      "content": "Feature 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "feature_4_icon",
+      "label": "Icon"
+    },
+    {
+      "type": "text",
+      "id": "feature_4_title",
+      "label": "Title",
+      "default": "Fast"
+    },
+    {
+      "type": "text",
+      "id": "feature_4_subtitle",
+      "label": "Subtitle",
+      "default": "Shipping"
+    },
+    {
+      "type": "header",
+      "content": "Feature 5"
+    },
+    {
+      "type": "image_picker",
+      "id": "feature_5_icon",
+      "label": "Icon"
+    },
+    {
+      "type": "text",
+      "id": "feature_5_title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "feature_5_subtitle",
+      "label": "Subtitle"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom image with text"
+    }
+  ]
+}
+{% endschema %}

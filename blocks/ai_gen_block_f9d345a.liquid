@@ -1,0 +1,1133 @@
+{% doc %}
+  @prompt
+    performance-stack-multicolumn.liquid
+    
+    This section must follow Shopify OS 2.0 standards and be production-ready.
+    
+    =====================================================
+    CORE FUNCTIONALITY (VERY IMPORTANT)
+    =====================================================
+    
+    1. The feature cards must scroll horizontally in an infinite loop.
+    2. Auto sliding must be smooth and continuous (marquee-style).
+    3. When user hovers over the section, animation must pause.
+    4. When hover ends, animation resumes.
+    5. No external libraries.
+    6. No heavy JS.
+    7. Prefer CSS animation for performance.
+    8. Must work smoothly on mobile and desktop.
+    
+    =====================================================
+    DESIGN STYLE
+    =====================================================
+    
+    Create a premium dark performance supplement aesthetic inspired by elite supplement brands.
+    
+    Visual Requirements:
+    
+    - Large bold uppercase heading
+    - Small supporting subheading
+    - Center aligned header
+    - Circular feature cards
+    - Glassmorphism effect
+    - Subtle glow and border
+    - Modern performance brand feel
+    - Dark textured background option
+    - Smooth hover animation (lift + glow)
+    
+    The section must feel high-end and aggressive.
+    
+    =====================================================
+    SECTION SETTINGS
+    =====================================================
+    
+    BACKGROUND:
+    - Background color
+    - Optional background image
+    - Background overlay color
+    - Overlay opacity (0–100)
+    - Optional noise texture toggle
+    - Optional gradient overlay
+    
+    SPACING:
+    - Padding top (0–200px)
+    - Padding bottom (0–200px)
+    
+    CONTAINER:
+    - Layout option:
+       • Full width
+       • Boxed
+    - Max width (1000–1600px)
+    
+    =====================================================
+    HEADER SETTINGS
+    =====================================================
+    
+    - Section heading (richtext)
+    - Subheading (optional richtext)
+    - Text alignment (left/center/right)
+    - Heading size:
+        • Small
+        • Medium
+        • Large
+        • Custom px (20–80px)
+    - Header margin bottom (0–100px)
+    - Uppercase toggle
+    
+    =====================================================
+    SLIDER SETTINGS (NEW IMPORTANT PART)
+    =====================================================
+    
+    - Enable auto slide (toggle)
+    - Slide speed control (5–60 seconds)
+    - Pause on hover toggle
+    - Enable manual drag on mobile (optional)
+    - Enable fade-in animation on scroll toggle
+    
+    =====================================================
+    GRID SETTINGS
+    =====================================================
+    
+    - Desktop visible cards (2–6)
+    - Tablet visible cards (1–3)
+    - Mobile visible cards (1–2)
+    - Column gap (0–60px)
+    
+    Must remain symmetric.
+    
+    =====================================================
+    BLOCK TYPE: "feature"
+    =====================================================
+    
+    Each block includes:
+    
+    - Image (icon style)
+    - Heading (text)
+    - Description (textarea)
+    
+    =====================================================
+    IMAGE SETTINGS (PER BLOCK)
+    =====================================================
+    
+    - Image ratio:
+        • Square
+        • Portrait
+        • Landscape
+        • Adapt to image
+    - Border radius (0–100px)
+    - Image fit (cover / contain)
+    - Image position (center / top / bottom)
+    
+    Circular background options:
+    - Enable circular background
+    - Circle background color
+    - Circle size (60–200px)
+    - Glow effect toggle
+    - Hover glow intensity control
+    
+    =====================================================
+    DESIGN REQUIREMENTS
+    =====================================================
+    
+    - Dark background aesthetic
+    - Glassmorphism circular cards
+    - Center aligned text
+    - Image inside circular container
+    - Subtle border
+    - Soft glow
+    - Hover lift effect
+    - CSS variables for spacing and colors
+    - Scoped CSS inside section
+    - Clean semantic HTML
+    - Mobile-first responsive
+    - No inline styles unless dynamic
+    - No external CSS or JS
+    - Production-ready
+    
+    =====================================================
+    TECHNICAL REQUIREMENTS
+    =====================================================
+    
+    - Duplicate blocks in Liquid for infinite seamless scrolling
+    - Use CSS keyframes animation
+    - Pause animation using:
+      .section:hover { animation-play-state: paused; }
+    
+    Return complete Shopify section code including:
+    - HTML
+    - CSS (inside <style>)
+    - Minimal JS only if required
+    - Full schema
+    
+    
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% liquid
+  assign heading_size_map = '{"small": 32, "medium": 48, "large": 64}'
+  assign heading_size_obj = heading_size_map | parse_json
+  
+  if block.settings.heading_size == 'custom'
+    assign final_heading_size = block.settings.heading_size_custom
+  else
+    assign final_heading_size = heading_size_obj[block.settings.heading_size]
+  endif
+
+  assign layout_class = 'full-width'
+  if block.settings.layout == 'boxed'
+    assign layout_class = 'boxed'
+  endif
+
+  assign slide_duration = block.settings.slide_speed
+  assign visible_desktop = block.settings.desktop_visible_cards
+  assign visible_tablet = block.settings.tablet_visible_cards
+  assign visible_mobile = block.settings.mobile_visible_cards
+%}
+
+{% style %}
+  .ai-perf-stack-{{ ai_gen_id }} {
+    position: relative;
+    padding-top: {{ block.settings.padding_top }}px;
+    padding-bottom: {{ block.settings.padding_bottom }}px;
+    background-color: {{ block.settings.background_color }};
+    overflow: hidden;
+    display: block;
+  }
+
+  {% if block.settings.background_image %}
+    .ai-perf-stack-{{ ai_gen_id }}::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('{{ block.settings.background_image | image_url: width: 2000 }}');
+      background-size: cover;
+      background-position: center;
+      z-index: 0;
+    }
+
+    .ai-perf-stack-{{ ai_gen_id }}::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: {{ block.settings.overlay_color }};
+      opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};
+      z-index: 1;
+    }
+  {% endif %}
+
+  {% if block.settings.enable_noise_texture %}
+    .ai-perf-stack-noise-{{ ai_gen_id }} {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 2;
+    }
+  {% endif %}
+
+  {% if block.settings.enable_gradient_overlay %}
+    .ai-perf-stack-gradient-{{ ai_gen_id }} {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 100%);
+      pointer-events: none;
+      z-index: 3;
+    }
+  {% endif %}
+
+  .ai-perf-stack-content-{{ ai_gen_id }} {
+    position: relative;
+    z-index: 4;
+  }
+
+  .ai-perf-stack-container-{{ ai_gen_id }} {
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .ai-perf-stack-container-{{ ai_gen_id }}.boxed {
+    max-width: {{ block.settings.max_width }}px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .ai-perf-stack-header-{{ ai_gen_id }} {
+    text-align: {{ block.settings.text_alignment }};
+    margin-bottom: {{ block.settings.header_margin_bottom }}px;
+    {% if block.settings.layout == 'boxed' %}
+      padding-left: 0;
+      padding-right: 0;
+    {% else %}
+      padding-left: 20px;
+      padding-right: 20px;
+    {% endif %}
+  }
+
+  .ai-perf-stack-heading-{{ ai_gen_id }} {
+    font-size: {{ final_heading_size }}px;
+    line-height: 1.1;
+    margin: 0 0 12px 0;
+    font-weight: 700;
+    color: {{ block.settings.text_color }};
+    {% if block.settings.uppercase_heading %}
+      text-transform: uppercase;
+    {% endif %}
+  }
+
+  .ai-perf-stack-subheading-{{ ai_gen_id }} {
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0;
+    opacity: 0.8;
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-perf-stack-slider-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .ai-perf-stack-slider-{{ ai_gen_id }} {
+    display: flex;
+    gap: {{ block.settings.column_gap }}px;
+    {% if block.settings.enable_auto_slide %}
+      animation: ai-perf-stack-scroll-{{ ai_gen_id }} {{ slide_duration }}s linear infinite;
+    {% endif %}
+  }
+
+  {% if block.settings.pause_on_hover %}
+    .ai-perf-stack-slider-wrapper-{{ ai_gen_id }}:hover .ai-perf-stack-slider-{{ ai_gen_id }} {
+      animation-play-state: paused;
+    }
+  {% endif %}
+
+  @keyframes ai-perf-stack-scroll-{{ ai_gen_id }} {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(calc(-100% / 2 - {{ block.settings.column_gap | divided_by: 2.0 }}px));
+    }
+  }
+
+  .ai-perf-stack-card-{{ ai_gen_id }} {
+    flex: 0 0 calc((100% - ({{ visible_desktop | minus: 1 }} * {{ block.settings.column_gap }}px)) / {{ visible_desktop }});
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 30px 20px;
+    background: {{ block.settings.card_background }};
+    backdrop-filter: blur(10px);
+    border-radius: {{ block.settings.card_border_radius }}px;
+    border: 1px solid {{ block.settings.card_border_color }};
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    {% if block.settings.enable_card_glow %}
+      box-shadow: 0 0 20px {{ block.settings.card_glow_color }};
+    {% endif %}
+  }
+
+  .ai-perf-stack-card-{{ ai_gen_id }}:hover {
+    transform: translateY(-8px);
+    {% if block.settings.enable_card_glow %}
+      box-shadow: 0 0 {{ block.settings.hover_glow_intensity }}px {{ block.settings.card_glow_color }};
+    {% endif %}
+  }
+
+  .ai-perf-stack-image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    margin-bottom: 20px;
+    {% if block.settings.enable_circular_background %}
+      width: {{ block.settings.circle_size }}px;
+      height: {{ block.settings.circle_size }}px;
+      border-radius: 50%;
+      background-color: {{ block.settings.circle_background_color }};
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      {% if block.settings.enable_circle_glow %}
+        box-shadow: 0 0 30px {{ block.settings.circle_glow_color }};
+      {% endif %}
+    {% endif %}
+  }
+
+  .ai-perf-stack-image-{{ ai_gen_id }} {
+    {% if block.settings.image_ratio == 'square' %}
+      aspect-ratio: 1 / 1;
+    {% elsif block.settings.image_ratio == 'portrait' %}
+      aspect-ratio: 3 / 4;
+    {% elsif block.settings.image_ratio == 'landscape' %}
+      aspect-ratio: 4 / 3;
+    {% endif %}
+    
+    {% if block.settings.enable_circular_background %}
+      width: 60%;
+      height: 60%;
+    {% else %}
+      width: 100%;
+      max-width: 120px;
+    {% endif %}
+    
+    object-fit: {{ block.settings.image_fit }};
+    object-position: {{ block.settings.image_position }};
+    border-radius: {{ block.settings.image_border_radius }}px;
+  }
+
+  .ai-perf-stack-card-heading-{{ ai_gen_id }} {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    color: {{ block.settings.card_text_color }};
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .ai-perf-stack-card-description-{{ ai_gen_id }} {
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+    color: {{ block.settings.card_text_color }};
+    opacity: 0.85;
+  }
+
+  @media screen and (max-width: 989px) {
+    .ai-perf-stack-card-{{ ai_gen_id }} {
+      flex: 0 0 calc((100% - ({{ visible_tablet | minus: 1 }} * {{ block.settings.column_gap }}px)) / {{ visible_tablet }});
+    }
+
+    .ai-perf-stack-heading-{{ ai_gen_id }} {
+      font-size: calc({{ final_heading_size }}px * 0.7);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-perf-stack-card-{{ ai_gen_id }} {
+      flex: 0 0 calc((100% - ({{ visible_mobile | minus: 1 }} * {{ block.settings.column_gap }}px)) / {{ visible_mobile }});
+    }
+
+    .ai-perf-stack-heading-{{ ai_gen_id }} {
+      font-size: calc({{ final_heading_size }}px * 0.5);
+    }
+
+    .ai-perf-stack-{{ ai_gen_id }} {
+      padding-top: {{ block.settings.padding_top | times: 0.6 }}px;
+      padding-bottom: {{ block.settings.padding_bottom | times: 0.6 }}px;
+    }
+  }
+{% endstyle %}
+
+<performance-stack-{{ ai_gen_id }} class="ai-perf-stack-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  {% if block.settings.enable_noise_texture %}
+    <div class="ai-perf-stack-noise-{{ ai_gen_id }}"></div>
+  {% endif %}
+  
+  {% if block.settings.enable_gradient_overlay %}
+    <div class="ai-perf-stack-gradient-{{ ai_gen_id }}"></div>
+  {% endif %}
+
+  <div class="ai-perf-stack-content-{{ ai_gen_id }}">
+    <div class="ai-perf-stack-container-{{ ai_gen_id }} {{ layout_class }}">
+      {% if block.settings.heading != blank or block.settings.subheading != blank %}
+        <div class="ai-perf-stack-header-{{ ai_gen_id }}">
+          {% if block.settings.heading != blank %}
+            <h2 class="ai-perf-stack-heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+          {% endif %}
+          {% if block.settings.subheading != blank %}
+            <div class="ai-perf-stack-subheading-{{ ai_gen_id }}">{{ block.settings.subheading }}</div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <div class="ai-perf-stack-slider-wrapper-{{ ai_gen_id }}">
+        <div class="ai-perf-stack-slider-{{ ai_gen_id }}">
+          {% for i in (1..6) %}
+            {% liquid
+              assign image_key = 'feature_' | append: i | append: '_image'
+              assign heading_key = 'feature_' | append: i | append: '_heading'
+              assign description_key = 'feature_' | append: i | append: '_description'
+              
+              assign feature_image = block.settings[image_key]
+              assign feature_heading = block.settings[heading_key]
+              assign feature_description = block.settings[description_key]
+            %}
+            
+            {% if feature_heading != blank or feature_description != blank or feature_image != blank %}
+              <div class="ai-perf-stack-card-{{ ai_gen_id }}">
+                <div class="ai-perf-stack-image-wrapper-{{ ai_gen_id }}">
+                  {% if feature_image %}
+                    <img
+                      src="{{ feature_image | image_url: width: 300 }}"
+                      alt="{{ feature_image.alt | escape }}"
+                      class="ai-perf-stack-image-{{ ai_gen_id }}"
+                      loading="lazy"
+                      width="120"
+                      height="120"
+                    >
+                  {% else %}
+                    {{ 'image' | placeholder_svg_tag }}
+                  {% endif %}
+                </div>
+                {% if feature_heading != blank %}
+                  <h3 class="ai-perf-stack-card-heading-{{ ai_gen_id }}">{{ feature_heading }}</h3>
+                {% endif %}
+                {% if feature_description != blank %}
+                  <p class="ai-perf-stack-card-description-{{ ai_gen_id }}">{{ feature_description }}</p>
+                {% endif %}
+              </div>
+            {% endif %}
+          {% endfor %}
+
+          {% if block.settings.enable_auto_slide %}
+            {% for i in (1..6) %}
+              {% liquid
+                assign image_key = 'feature_' | append: i | append: '_image'
+                assign heading_key = 'feature_' | append: i | append: '_heading'
+                assign description_key = 'feature_' | append: i | append: '_description'
+                
+                assign feature_image = block.settings[image_key]
+                assign feature_heading = block.settings[heading_key]
+                assign feature_description = block.settings[description_key]
+              %}
+              
+              {% if feature_heading != blank or feature_description != blank or feature_image != blank %}
+                <div class="ai-perf-stack-card-{{ ai_gen_id }}">
+                  <div class="ai-perf-stack-image-wrapper-{{ ai_gen_id }}">
+                    {% if feature_image %}
+                      <img
+                        src="{{ feature_image | image_url: width: 300 }}"
+                        alt="{{ feature_image.alt | escape }}"
+                        class="ai-perf-stack-image-{{ ai_gen_id }}"
+                        loading="lazy"
+                        width="120"
+                        height="120"
+                      >
+                    {% else %}
+                      {{ 'image' | placeholder_svg_tag }}
+                    {% endif %}
+                  </div>
+                  {% if feature_heading != blank %}
+                    <h3 class="ai-perf-stack-card-heading-{{ ai_gen_id }}">{{ feature_heading }}</h3>
+                  {% endif %}
+                  {% if feature_description != blank %}
+                    <p class="ai-perf-stack-card-description-{{ ai_gen_id }}">{{ feature_description }}</p>
+                  {% endif %}
+                </div>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</performance-stack-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class PerformanceStack{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        {% if block.settings.enable_fade_in %}
+          this.setupScrollAnimation();
+        {% endif %}
+      }
+
+      setupScrollAnimation() {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.style.opacity = '1';
+              entry.target.style.transform = 'translateY(0)';
+            }
+          });
+        }, { threshold: 0.1 });
+
+        this.style.opacity = '0';
+        this.style.transform = 'translateY(30px)';
+        this.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        
+        observer.observe(this);
+      }
+    }
+
+    customElements.define('performance-stack-{{ ai_gen_id }}', PerformanceStack{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Performance multicolumn",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Overlay opacity",
+      "default": 50
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_noise_texture",
+      "label": "Enable noise texture",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_gradient_overlay",
+      "label": "Enable gradient",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "full-width",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "full-width"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 1000,
+      "max": 1600,
+      "step": 50,
+      "unit": "px",
+      "label": "Max width",
+      "default": 1400
+    },
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "<p>ELITE PERFORMANCE</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "<p>Engineered for peak results</p>"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ],
+      "default": "large"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_custom",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Custom heading size",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "header_margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Header margin bottom",
+      "default": 50
+    },
+    {
+      "type": "checkbox",
+      "id": "uppercase_heading",
+      "label": "Uppercase heading",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Slider"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_auto_slide",
+      "label": "Enable auto slide",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "slide_speed",
+      "min": 5,
+      "max": 60,
+      "step": 5,
+      "unit": "s",
+      "label": "Slide speed",
+      "default": 30
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause on hover",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_fade_in",
+      "label": "Fade-in on scroll",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Grid"
+    },
+    {
+      "type": "range",
+      "id": "desktop_visible_cards",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "label": "Desktop visible cards",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "tablet_visible_cards",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "label": "Tablet visible cards",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "mobile_visible_cards",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Mobile visible cards",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Column gap",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Card style"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Background",
+      "default": "rgba(255, 255, 255, 0.05)"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Border color",
+      "default": "rgba(255, 255, 255, 0.1)"
+    },
+    {
+      "type": "color",
+      "id": "card_text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 20
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_card_glow",
+      "label": "Enable glow",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "card_glow_color",
+      "label": "Glow color",
+      "default": "rgba(255, 255, 255, 0.1)"
+    },
+    {
+      "type": "range",
+      "id": "hover_glow_intensity",
+      "min": 20,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Hover glow intensity",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image ratio",
+      "options": [
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "portrait",
+          "label": "Portrait"
+        },
+        {
+          "value": "landscape",
+          "label": "Landscape"
+        },
+        {
+          "value": "adapt",
+          "label": "Adapt to image"
+        }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image fit",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Cover"
+        },
+        {
+          "value": "contain",
+          "label": "Contain"
+        }
+      ],
+      "default": "contain"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position",
+      "options": [
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Circular background"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_circular_background",
+      "label": "Enable",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "circle_background_color",
+      "label": "Background color",
+      "default": "rgba(255, 255, 255, 0.08)"
+    },
+    {
+      "type": "range",
+      "id": "circle_size",
+      "min": 60,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Size",
+      "default": 120
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_circle_glow",
+      "label": "Enable glow",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "circle_glow_color",
+      "label": "Glow color",
+      "default": "rgba(255, 255, 255, 0.15)"
+    },
+    {
+      "type": "header",
+      "content": "Feature 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "feature_1_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "feature_1_heading",
+      "label": "Heading",
+      "default": "Premium Quality"
+    },
+    {
+      "type": "textarea",
+      "id": "feature_1_description",
+      "label": "Description",
+      "default": "Lab-tested ingredients"
+    },
+    {
+      "type": "header",
+      "content": "Feature 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "feature_2_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "feature_2_heading",
+      "label": "Heading",
+      "default": "Fast Results"
+    },
+    {
+      "type": "textarea",
+      "id": "feature_2_description",
+      "label": "Description",
+      "default": "See changes in weeks"
+    },
+    {
+      "type": "header",
+      "content": "Feature 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "feature_3_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "feature_3_heading",
+      "label": "Heading",
+      "default": "Science Backed"
+    },
+    {
+      "type": "textarea",
+      "id": "feature_3_description",
+      "label": "Description",
+      "default": "Clinically proven formula"
+    },
+    {
+      "type": "header",
+      "content": "Feature 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "feature_4_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "feature_4_heading",
+      "label": "Heading",
+      "default": "Zero Fillers"
+    },
+    {
+      "type": "textarea",
+      "id": "feature_4_description",
+      "label": "Description",
+      "default": "Pure active ingredients"
+    },
+    {
+      "type": "header",
+      "content": "Feature 5"
+    },
+    {
+      "type": "image_picker",
+      "id": "feature_5_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "feature_5_heading",
+      "label": "Heading"
+    },
+    {
+      "type": "textarea",
+      "id": "feature_5_description",
+      "label": "Description"
+    },
+    {
+      "type": "header",
+      "content": "Feature 6"
+    },
+    {
+      "type": "image_picker",
+      "id": "feature_6_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "feature_6_heading",
+      "label": "Heading"
+    },
+    {
+      "type": "textarea",
+      "id": "feature_6_description",
+      "label": "Description"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Performance multicolumn"
+    }
+  ]
+}
+{% endschema %}
