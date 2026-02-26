@@ -1,0 +1,802 @@
+{% doc %}
+  @prompt
+    Create a premium full-width section titled "RESERVE YOUR STASH" with a modern dark aesthetic layout.
+    
+    --------------------------------------------------
+    
+    SECTION SETTINGS:
+    - Width: 100%
+    - Background: #0E0E0E
+    - Padding top: 120px
+    - Padding bottom: 120px
+    - Layout: Vertical Stack
+    - Align: Center
+    
+    --------------------------------------------------
+    
+    INNER CONTAINER:
+    - Max width: 1200px
+    - Width: 100%
+    - Layout: Horizontal (2 columns)
+    - Gap: 80px
+    - Vertical align: Center
+    - Responsive enabled
+    
+    --------------------------------------------------
+    
+    LEFT COLUMN (IMAGE):
+    
+    Add a large product lifestyle image.
+    
+    IMAGE CONTAINER:
+    - Max width: 520px
+    - Width: 100%
+    - Aspect ratio: 1:1 (Square default)
+    - Optional support: 4:5 Portrait
+    - Border radius: 20px
+    - Overflow: Hidden
+    - Shadow: 0px 20px 40px rgba(0,0,0,0.3)
+    
+    IMAGE:
+    - Width: 100%
+    - Height: 100%
+    - Object fit: Cover
+    - Hover animation:
+        Scale: 1.05
+        Transition: 0.4s ease
+        Smooth zoom inside container
+        No layout shift
+    
+    --------------------------------------------------
+    
+    RIGHT COLUMN (CONTENT):
+    
+    Add small label text:
+    - "LIMITED STOCK"
+    - Font size: 14px
+    - Letter spacing: 2px
+    - Color: #888888
+    - Margin bottom: 16px
+    
+    Add heading:
+    - "Reserve Your Stash Before It’s Gone"
+    - Font size: 48px
+    - Font weight: 700
+    - Line height: 110%
+    - Color: #FFFFFF
+    - Max width: 520px
+    - Margin bottom: 20px
+    
+    Add paragraph:
+    - Font size: 18px
+    - Color: #B3B3B3
+    - Line height: 150%
+    - Max width: 480px
+    - Margin bottom: 40px
+    
+    --------------------------------------------------
+    
+    PRODUCT GRID:
+    
+    Add a 3-column grid below paragraph.
+    
+    GRID:
+    - Columns: 3
+    - Gap: 24px
+    - Width: 100%
+    - Margin top: 20px
+    
+    --------------------------------------------------
+    
+    CARD DESIGN (Each Card):
+    
+    - Background: #161616
+    - Border: 1px solid #2A2A2A
+    - Border radius: 16px
+    - Padding: 24px
+    - Layout: Vertical Stack
+    - Gap: 12px
+    - Transition: 0.3s ease
+    - Hover: Scale 1.03
+    
+    --------------------------------------------------
+    
+    INSIDE EACH CARD:
+    
+    1) PRODUCT IMAGE CONTAINER:
+       - Height: 160px
+       - Width: 100%
+       - Background: #1E1E1E
+       - Border radius: 12px
+       - Padding: 16px
+       - Align: Center
+       - Layout: Centered
+    
+       IMAGE:
+       - Max height: 100%
+       - Max width: 100%
+       - Object fit: Contain
+    
+    2) Flavor Heading:
+       - Font size: 20px
+       - Font weight: 600
+       - Color: #FFFFFF
+    
+    3) Small Description:
+       - Font size: 14px
+       - Color: #999999
+       - Line height: 140%
+    
+    4) Price:
+       - Font size: 18px
+       - Font weight: 700
+       - Color: #FFFFFF
+       - Margin top: 8px
+    
+    --------------------------------------------------
+    
+    PRIMARY BUTTON (Below Grid):
+    
+    - Text: "Reserve Now"
+    - Background: #FFFFFF
+    - Text color: #000000
+    - Padding: 16px 32px
+    - Border radius: 100px
+    - Font weight: 600
+    - Margin top: 40px
+    - Transition: 0.3s ease
+    - Hover background: #EAEAEA
+    - Hover scale: 1.02
+    
+    --------------------------------------------------
+    
+    SMALL NOTE TEXT (Below Button):
+    
+    "Ships within 3–5 business days. Limited quantities available."
+    
+    - Font size: 14px
+    - Color: #777777
+    - Margin top: 16px
+    
+    --------------------------------------------------
+    
+    RESPONSIVE SETTINGS:
+    
+    Tablet:
+    - Main layout → Vertical Stack
+    - Image on top
+    - Grid → 2 columns
+    - Reduce column gap to 40px
+    
+    Mobile:
+    - Stack layout
+    - Image full width on top
+    - Grid → 1 column
+    - Heading size → 32px
+    - Section padding → 80px top & bottom
+    - Reduce grid gap → 24px
+    
+    --------------------------------------------------
+    
+    Ensure:
+    - Clean premium styling
+    - Balanced spacing
+    - Smooth hover animations
+    - Modern dark product showcase look
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-reserve-stash-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    background-color: {{ block.settings.background_color }};
+    padding-top: {{ block.settings.padding_top }}px;
+    padding-bottom: {{ block.settings.padding_bottom }}px;
+  }
+
+  .ai-reserve-stash__container-{{ ai_gen_id }} {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-reserve-stash__layout-{{ ai_gen_id }} {
+    display: flex;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .ai-reserve-stash__image-column-{{ ai_gen_id }} {
+    flex: 0 0 auto;
+    max-width: 520px;
+    width: 100%;
+  }
+
+  .ai-reserve-stash__image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    {% if block.settings.aspect_ratio == 'square' %}
+      padding-bottom: 100%;
+    {% else %}
+      padding-bottom: 125%;
+    {% endif %}
+    border-radius: {{ block.settings.image_border_radius }}px;
+    overflow: hidden;
+    box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  .ai-reserve-stash__image-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .ai-reserve-stash__image-wrapper-{{ ai_gen_id }}:hover .ai-reserve-stash__image-{{ ai_gen_id }} {
+    transform: scale(1.05);
+  }
+
+  .ai-reserve-stash__image-placeholder-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #1E1E1E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ai-reserve-stash__image-placeholder-{{ ai_gen_id }} svg {
+    width: 60%;
+    height: 60%;
+    opacity: 0.3;
+  }
+
+  .ai-reserve-stash__content-column-{{ ai_gen_id }} {
+    flex: 1;
+  }
+
+  .ai-reserve-stash__label-{{ ai_gen_id }} {
+    font-size: {{ block.settings.label_font_size }}px;
+    letter-spacing: 2px;
+    color: {{ block.settings.label_color }};
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  .ai-reserve-stash__heading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.heading_font_size }}px;
+    font-weight: 700;
+    line-height: 110%;
+    color: {{ block.settings.heading_color }};
+    max-width: 520px;
+    margin: 0 0 20px 0;
+  }
+
+  .ai-reserve-stash__paragraph-{{ ai_gen_id }} {
+    font-size: {{ block.settings.paragraph_font_size }}px;
+    color: {{ block.settings.paragraph_color }};
+    line-height: 150%;
+    max-width: 480px;
+    margin-bottom: 40px;
+  }
+
+  .ai-reserve-stash__grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 20px;
+  }
+
+  .ai-reserve-stash__card-{{ ai_gen_id }} {
+    background-color: {{ block.settings.card_background }};
+    border: 1px solid {{ block.settings.card_border_color }};
+    border-radius: {{ block.settings.card_border_radius }}px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: transform 0.3s ease;
+  }
+
+  .ai-reserve-stash__card-{{ ai_gen_id }}:hover {
+    transform: scale(1.03);
+  }
+
+  .ai-reserve-stash__card-image-container-{{ ai_gen_id }} {
+    height: 160px;
+    width: 100%;
+    background-color: {{ block.settings.card_image_bg }};
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ai-reserve-stash__card-image-{{ ai_gen_id }} {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+  }
+
+  .ai-reserve-stash__card-image-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ai-reserve-stash__card-image-placeholder-{{ ai_gen_id }} svg {
+    width: 60%;
+    height: 60%;
+    opacity: 0.2;
+  }
+
+  .ai-reserve-stash__card-title-{{ ai_gen_id }} {
+    font-size: 20px;
+    font-weight: 600;
+    color: {{ block.settings.card_text_color }};
+    margin: 0;
+  }
+
+  .ai-reserve-stash__card-description-{{ ai_gen_id }} {
+    font-size: 14px;
+    color: {{ block.settings.card_description_color }};
+    line-height: 140%;
+    margin: 0;
+  }
+
+  .ai-reserve-stash__card-price-{{ ai_gen_id }} {
+    font-size: 18px;
+    font-weight: 700;
+    color: {{ block.settings.card_text_color }};
+    margin-top: 8px;
+  }
+
+  .ai-reserve-stash__button-{{ ai_gen_id }} {
+    display: inline-block;
+    background-color: {{ block.settings.button_background }};
+    color: {{ block.settings.button_text_color }};
+    padding: 16px 32px;
+    border-radius: 100px;
+    font-weight: 600;
+    text-decoration: none;
+    margin-top: 40px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .ai-reserve-stash__button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_background }};
+    transform: scale(1.02);
+  }
+
+  .ai-reserve-stash__note-{{ ai_gen_id }} {
+    font-size: 14px;
+    color: {{ block.settings.note_color }};
+    margin-top: 16px;
+  }
+
+  @media screen and (max-width: 989px) {
+    .ai-reserve-stash__layout-{{ ai_gen_id }} {
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .ai-reserve-stash__image-column-{{ ai_gen_id }} {
+      max-width: 100%;
+    }
+
+    .ai-reserve-stash__grid-{{ ai_gen_id }} {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-reserve-stash-{{ ai_gen_id }} {
+      padding-top: 80px;
+      padding-bottom: 80px;
+    }
+
+    .ai-reserve-stash__heading-{{ ai_gen_id }} {
+      font-size: 32px;
+    }
+
+    .ai-reserve-stash__grid-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  }
+{% endstyle %}
+
+<reserve-stash-{{ ai_gen_id }} class="ai-reserve-stash-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-reserve-stash__container-{{ ai_gen_id }}">
+    <div class="ai-reserve-stash__layout-{{ ai_gen_id }}">
+      <div class="ai-reserve-stash__image-column-{{ ai_gen_id }}">
+        <div class="ai-reserve-stash__image-wrapper-{{ ai_gen_id }}">
+          {% if block.settings.lifestyle_image %}
+            <img
+              src="{{ block.settings.lifestyle_image | image_url: width: 1040 }}"
+              alt="{{ block.settings.lifestyle_image.alt | escape }}"
+              class="ai-reserve-stash__image-{{ ai_gen_id }}"
+              loading="lazy"
+              width="{{ block.settings.lifestyle_image.width }}"
+              height="{{ block.settings.lifestyle_image.height }}"
+            >
+          {% else %}
+            <div class="ai-reserve-stash__image-placeholder-{{ ai_gen_id }}">
+              {{ 'product-1' | placeholder_svg_tag }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="ai-reserve-stash__content-column-{{ ai_gen_id }}">
+        {% if block.settings.label_text != blank %}
+          <div class="ai-reserve-stash__label-{{ ai_gen_id }}">
+            {{ block.settings.label_text }}
+          </div>
+        {% endif %}
+
+        {% if block.settings.heading != blank %}
+          <h2 class="ai-reserve-stash__heading-{{ ai_gen_id }}">
+            {{ block.settings.heading }}
+          </h2>
+        {% endif %}
+
+        {% if block.settings.paragraph != blank %}
+          <div class="ai-reserve-stash__paragraph-{{ ai_gen_id }}">
+            {{ block.settings.paragraph }}
+          </div>
+        {% endif %}
+
+        <div class="ai-reserve-stash__grid-{{ ai_gen_id }}">
+          {% for i in (1..3) %}
+            {% liquid
+              assign product_key = 'product_' | append: i
+              assign product = block.settings[product_key]
+            %}
+            <div class="ai-reserve-stash__card-{{ ai_gen_id }}">
+              <div class="ai-reserve-stash__card-image-container-{{ ai_gen_id }}">
+                {% if product != blank and product.featured_image %}
+                  <img
+                    src="{{ product.featured_image | image_url: width: 320 }}"
+                    alt="{{ product.featured_image.alt | escape }}"
+                    class="ai-reserve-stash__card-image-{{ ai_gen_id }}"
+                    loading="lazy"
+                    width="160"
+                    height="160"
+                  >
+                {% else %}
+                  <div class="ai-reserve-stash__card-image-placeholder-{{ ai_gen_id }}">
+                    {{ 'product-1' | placeholder_svg_tag }}
+                  </div>
+                {% endif %}
+              </div>
+
+              {% if product != blank %}
+                <h3 class="ai-reserve-stash__card-title-{{ ai_gen_id }}">
+                  {{ product.title }}
+                </h3>
+                <p class="ai-reserve-stash__card-description-{{ ai_gen_id }}">
+                  {{ product.description | strip_html | truncate: 60 }}
+                </p>
+                <div class="ai-reserve-stash__card-price-{{ ai_gen_id }}">
+                  {{ product.price | money }}
+                </div>
+              {% else %}
+                <h3 class="ai-reserve-stash__card-title-{{ ai_gen_id }}">
+                  Product {{ i }}
+                </h3>
+                <p class="ai-reserve-stash__card-description-{{ ai_gen_id }}">
+                  Select a product to display
+                </p>
+                <div class="ai-reserve-stash__card-price-{{ ai_gen_id }}">
+                  $0.00
+                </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+
+        {% if block.settings.button_link != blank %}
+          <a href="{{ block.settings.button_link }}" class="ai-reserve-stash__button-{{ ai_gen_id }}">
+            {{ block.settings.button_text }}
+          </a>
+        {% else %}
+          <button class="ai-reserve-stash__button-{{ ai_gen_id }}">
+            {{ block.settings.button_text }}
+          </button>
+        {% endif %}
+
+        {% if block.settings.note_text != blank %}
+          <div class="ai-reserve-stash__note-{{ ai_gen_id }}">
+            {{ block.settings.note_text }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</reserve-stash-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class ReserveStash{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+      }
+    }
+
+    customElements.define('reserve-stash-{{ ai_gen_id }}', ReserveStash{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Reserve your stash",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section settings"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#0E0E0E"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "default": 120
+    },
+    {
+      "type": "header",
+      "content": "Lifestyle image"
+    },
+    {
+      "type": "image_picker",
+      "id": "lifestyle_image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "label": "Aspect ratio",
+      "options": [
+        {
+          "value": "square",
+          "label": "Square (1:1)"
+        },
+        {
+          "value": "portrait",
+          "label": "Portrait (4:5)"
+        }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "label_text",
+      "label": "Label text",
+      "default": "LIMITED STOCK"
+    },
+    {
+      "type": "range",
+      "id": "label_font_size",
+      "label": "Label font size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Label color",
+      "default": "#888888"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Reserve Your Stash Before It's Gone"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Heading font size",
+      "min": 24,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "textarea",
+      "id": "paragraph",
+      "label": "Paragraph",
+      "default": "Don't miss out on our premium selection. Reserve your favorite products now and enjoy exclusive early access to our limited stock collection."
+    },
+    {
+      "type": "range",
+      "id": "paragraph_font_size",
+      "label": "Paragraph font size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "paragraph_color",
+      "label": "Paragraph color",
+      "default": "#B3B3B3"
+    },
+    {
+      "type": "header",
+      "content": "Product cards"
+    },
+    {
+      "type": "product",
+      "id": "product_1",
+      "label": "Product 1"
+    },
+    {
+      "type": "product",
+      "id": "product_2",
+      "label": "Product 2"
+    },
+    {
+      "type": "product",
+      "id": "product_3",
+      "label": "Product 3"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background",
+      "default": "#161616"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card border color",
+      "default": "#2A2A2A"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "label": "Card border radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "card_image_bg",
+      "label": "Card image background",
+      "default": "#1E1E1E"
+    },
+    {
+      "type": "color",
+      "id": "card_text_color",
+      "label": "Card text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_description_color",
+      "label": "Card description color",
+      "default": "#999999"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Reserve Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background",
+      "label": "Button hover background",
+      "default": "#EAEAEA"
+    },
+    {
+      "type": "header",
+      "content": "Note"
+    },
+    {
+      "type": "text",
+      "id": "note_text",
+      "label": "Note text",
+      "default": "Ships within 3–5 business days. Limited quantities available."
+    },
+    {
+      "type": "color",
+      "id": "note_color",
+      "label": "Note color",
+      "default": "#777777"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Reserve your stash"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,684 @@
+{% doc %}
+  @prompt
+    
+    
+    ---
+    
+    # Customizable Rich Text Section Specification 
+    
+    ## 1️⃣ Layout Options
+    
+    **Container Width Settings**
+    
+    * Option selector:
+    
+      * Full Width (100%)
+      * Boxed (theme default container)
+      * Custom Max Width
+    * If **Custom Max Width** is selected:
+    
+      * Enable Max Width input (px)
+      * Range: 800px – 1800px
+      * Default: 1200px
+    * Section must be fully responsive (desktop, tablet, mobile)
+    
+    ---
+    
+    ## 2️⃣ Spacing Controls
+    
+    * Top Padding (separate control)
+    * Bottom Padding (separate control)
+    * Unit: px (responsive-ready if supported)
+    
+    ---
+    
+    ## 3️⃣ Style Controls
+    
+    * Background Color picker
+    * Text Color picker
+    * Text Alignment selector:
+    
+      * Left
+      * Center
+      * Right
+    
+    ---
+    
+    ## 4️⃣ Content Structure
+    
+    ### 🖼 Image
+    
+    * Upload image option
+    * Image display mode:
+    
+      * Cover
+      * Contain
+    * Image size controls:
+    
+      * Width (px or %)
+      * Max-width option
+    * Responsive scaling enabled
+    
+    ### 🏷 Title (Small Label Text)
+    
+    * Font size control: 10px – 40px
+    * Bottom spacing control
+    * Styled as paragraph or small heading
+    
+    ### 📝 Heading
+    
+    * Selectable tag:
+    
+      * H2
+      * H3
+    
+    ### 📄 Description
+    
+    * Short paragraph text
+    * Clean readable line-height
+    
+    ### 🔘 CTA Button (Optional)
+    
+    * Enable/Disable toggle
+    * Button label field
+    * Button link field
+    * Accessible focus state required
+    
+    ---
+    
+    ## 5️⃣ Rich Text Area
+    
+    * Fully editable WYSIWYG field
+    * Custom width control for content area
+    * Option to control max-width separately from section width
+    
+    ---
+    
+    ## 6️⃣ Layout Behavior
+    
+    * Desktop:
+    
+      * Flexible layout (image + text side by side if enabled)
+    * Mobile:
+    
+      * Stacked layout (image above text)
+    * Maintain proper spacing between:
+    
+      * Image
+      * Title
+      * Heading
+      * Paragraph
+      * Button
+    
+    ---
+    
+    ## 7️⃣ Design Requirements
+    
+    * Clean vertical rhythm
+    * Consistent spacing system
+    * Mobile-first responsive structure
+    * Accessibility best practices:
+    
+      * Proper heading hierarchy
+      * Alt text required for image
+      * Button accessible via keyboard
+      * Sufficient color contrast
+    
+    
+    
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-rich-text-section-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    padding-top: {{ block.settings.padding_top }}px;
+    padding-bottom: {{ block.settings.padding_bottom }}px;
+    background-color: {{ block.settings.background_color }};
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-rich-text-container-{{ ai_gen_id }} {
+    {% if block.settings.container_width == 'full' %}
+      width: 100%;
+      max-width: 100%;
+      padding-left: 20px;
+      padding-right: 20px;
+    {% elsif block.settings.container_width == 'boxed' %}
+      width: 100%;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 20px;
+      padding-right: 20px;
+    {% else %}
+      width: 100%;
+      max-width: {{ block.settings.custom_max_width }}px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 20px;
+      padding-right: 20px;
+    {% endif %}
+  }
+
+  .ai-rich-text-content-{{ ai_gen_id }} {
+    text-align: {{ block.settings.text_alignment }};
+  }
+
+  .ai-rich-text-layout-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .ai-rich-text-image-wrapper-{{ ai_gen_id }} {
+    width: 100%;
+  }
+
+  .ai-rich-text-image-{{ ai_gen_id }} {
+    width: {{ block.settings.image_width }}%;
+    max-width: {{ block.settings.image_max_width }}px;
+    height: auto;
+    display: block;
+    {% if block.settings.text_alignment == 'center' %}
+      margin-left: auto;
+      margin-right: auto;
+    {% elsif block.settings.text_alignment == 'right' %}
+      margin-left: auto;
+    {% endif %}
+    object-fit: {{ block.settings.image_display_mode }};
+  }
+
+  .ai-rich-text-image-placeholder-{{ ai_gen_id }} {
+    width: {{ block.settings.image_width }}%;
+    max-width: {{ block.settings.image_max_width }}px;
+    {% if block.settings.text_alignment == 'center' %}
+      margin-left: auto;
+      margin-right: auto;
+    {% elsif block.settings.text_alignment == 'right' %}
+      margin-left: auto;
+    {% endif %}
+    background-color: #f4f4f4;
+    border-radius: 8px;
+  }
+
+  .ai-rich-text-image-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .ai-rich-text-text-content-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .ai-rich-text-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_font_size }}px;
+    margin: 0 0 {{ block.settings.title_spacing }}px 0;
+    line-height: 1.4;
+  }
+
+  .ai-rich-text-heading-{{ ai_gen_id }} {
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .ai-rich-text-description-{{ ai_gen_id }} {
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .ai-rich-text-richtext-{{ ai_gen_id }} {
+    max-width: {{ block.settings.richtext_max_width }}px;
+    {% if block.settings.text_alignment == 'center' %}
+      margin-left: auto;
+      margin-right: auto;
+    {% elsif block.settings.text_alignment == 'right' %}
+      margin-left: auto;
+    {% endif %}
+  }
+
+  .ai-rich-text-richtext-{{ ai_gen_id }} p {
+    line-height: 1.6;
+    margin: 0 0 16px 0;
+  }
+
+  .ai-rich-text-richtext-{{ ai_gen_id }} p:last-child {
+    margin-bottom: 0;
+  }
+
+  .ai-rich-text-button-{{ ai_gen_id }} {
+    display: inline-block;
+    padding: 12px 32px;
+    background-color: {{ block.settings.button_background_color }};
+    color: {{ block.settings.button_text_color }};
+    text-decoration: none;
+    border-radius: 14px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 8px;
+  }
+
+  .ai-rich-text-button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_color }};
+    color: {{ block.settings.button_hover_text_color }};
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-rich-text-layout-{{ ai_gen_id }} {
+      {% if block.settings.desktop_layout == 'side-by-side' %}
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 48px;
+      {% endif %}
+    }
+
+    .ai-rich-text-image-wrapper-{{ ai_gen_id }} {
+      {% if block.settings.desktop_layout == 'side-by-side' %}
+        flex: 0 0 40%;
+      {% endif %}
+    }
+
+    .ai-rich-text-text-content-{{ ai_gen_id }} {
+      {% if block.settings.desktop_layout == 'side-by-side' %}
+        flex: 1;
+      {% endif %}
+    }
+  }
+{% endstyle %}
+
+<ai-rich-text-{{ ai_gen_id }} class="ai-rich-text-section-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-rich-text-container-{{ ai_gen_id }}">
+    <div class="ai-rich-text-content-{{ ai_gen_id }}">
+      <div class="ai-rich-text-layout-{{ ai_gen_id }}">
+        {% if block.settings.show_image %}
+          <div class="ai-rich-text-image-wrapper-{{ ai_gen_id }}">
+            {% if block.settings.image %}
+              <img
+                src="{{ block.settings.image | image_url: width: 2000 }}"
+                alt="{{ block.settings.image.alt | escape }}"
+                loading="lazy"
+                width="{{ block.settings.image.width }}"
+                height="{{ block.settings.image.height }}"
+                class="ai-rich-text-image-{{ ai_gen_id }}"
+              >
+            {% else %}
+              <div class="ai-rich-text-image-placeholder-{{ ai_gen_id }}">
+                {{ 'image' | placeholder_svg_tag }}
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        <div class="ai-rich-text-text-content-{{ ai_gen_id }}">
+          {% if block.settings.title != blank %}
+            <p class="ai-rich-text-title-{{ ai_gen_id }}">{{ block.settings.title }}</p>
+          {% endif %}
+
+          {% if block.settings.heading != blank %}
+            {% if block.settings.heading_tag == 'h2' %}
+              <h2 class="ai-rich-text-heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+            {% else %}
+              <h3 class="ai-rich-text-heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h3>
+            {% endif %}
+          {% endif %}
+
+          {% if block.settings.description != blank %}
+            <p class="ai-rich-text-description-{{ ai_gen_id }}">{{ block.settings.description }}</p>
+          {% endif %}
+
+          {% if block.settings.richtext != blank %}
+            <div class="ai-rich-text-richtext-{{ ai_gen_id }}">
+              {{ block.settings.richtext }}
+            </div>
+          {% endif %}
+
+          {% if block.settings.show_button and block.settings.button_label != blank %}
+            <a
+              href="{{ block.settings.button_link }}"
+              class="ai-rich-text-button-{{ ai_gen_id }}"
+            >
+              {{ block.settings.button_label }}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</ai-rich-text-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class AiRichText{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+      }
+    }
+
+    customElements.define('ai-rich-text-{{ ai_gen_id }}', AiRichText{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Rich text",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container width",
+      "options": [
+        {
+          "value": "full",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        },
+        {
+          "value": "custom",
+          "label": "Custom max width"
+        }
+      ],
+      "default": "boxed"
+    },
+    {
+      "type": "range",
+      "id": "custom_max_width",
+      "label": "Custom max width",
+      "min": 800,
+      "max": 1800,
+      "step": 50,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "type": "select",
+      "id": "desktop_layout",
+      "label": "Desktop layout",
+      "options": [
+        {
+          "value": "stacked",
+          "label": "Stacked"
+        },
+        {
+          "value": "side-by-side",
+          "label": "Side by side"
+        }
+      ],
+      "default": "stacked"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#000000"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Show image",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "image_display_mode",
+      "label": "Display mode",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Cover"
+        },
+        {
+          "value": "contain",
+          "label": "Contain"
+        }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "range",
+      "id": "image_width",
+      "label": "Width",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "image_max_width",
+      "label": "Max width",
+      "min": 200,
+      "max": 1000,
+      "step": 50,
+      "unit": "px",
+      "default": 600
+    },
+    {
+      "type": "header",
+      "content": "Title"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "label": "Font size",
+      "min": 10,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "title_spacing",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Rich text"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading tag",
+      "options": [
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "header",
+      "content": "Description"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Share information about your brand with your customers."
+    },
+    {
+      "type": "header",
+      "content": "Rich text content"
+    },
+    {
+      "type": "richtext",
+      "id": "richtext",
+      "label": "Rich text",
+      "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+    },
+    {
+      "type": "range",
+      "id": "richtext_max_width",
+      "label": "Content max width",
+      "min": 400,
+      "max": 1200,
+      "step": 50,
+      "unit": "px",
+      "default": 800
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button",
+      "label": "Show button",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Learn more"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "Button background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_color",
+      "label": "Button hover background",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Button hover text",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Rich text"
+    }
+  ],
+  "tag": null
+}
+{% endschema %}

@@ -1,0 +1,594 @@
+{% doc %}
+  @prompt
+    
+    
+    > Create a responsive Instagram gallery section for a website.
+    >
+    > Requirements:
+    >
+    > * Section layout full width container
+    > * Top and bottom padding settings (editable)
+    > * Section title and heading with alignment options
+    > * Social media icon (Instagram) with URL setting (clickable link)
+    > * Multi-column layout (desktop 4 columns, tablet 2 columns, mobile 1 column)
+    > * Each column contains Instagram image with link option
+    > * Image size fixed 300px height (with responsive width 100%)
+    > * Border radius setting (default 300px circular style, editable option)
+    > * On hover:
+    >
+    >   * Image zoom effect (scale 1.1 smooth transition)
+    >   * Dark overlay
+    >   * Instagram icon appear in center
+    > * Smooth transition animation (0.3s ease)
+    > * Image object-fit cover
+    > * Section customizable settings panel including:
+    >
+    >   * Title text
+    >   * Heading text
+    >   * Instagram profile URL
+    >   * Image upload option
+    >   * Image link option
+    >   * Border radius control
+    >   * Image height control
+    >   * Padding top & bottom control
+    >   * Columns control
+    >
+    
+    , Container Width Settings
+    Option selector:
+    Full Width (100%)
+    Boxed (theme default container)
+    Custom Max Width
+    If Custom Max Width is selected:
+    Enable Max Width input (px)
+    Range: 800px – 1800px
+    Default: 1200px
+    Section must be fully responsive (desktop, tablet, mobile)
+    
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-instagram-gallery-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    padding-top: {{ block.settings.padding_top }}px;
+    padding-bottom: {{ block.settings.padding_bottom }}px;
+  }
+
+  .ai-instagram-gallery__container-{{ ai_gen_id }} {
+    margin: 0 auto;
+    padding: 0 20px;
+    {% if block.settings.container_width == 'full' %}
+      max-width: 100%;
+    {% elsif block.settings.container_width == 'boxed' %}
+      max-width: 1200px;
+    {% elsif block.settings.container_width == 'custom' %}
+      max-width: {{ block.settings.custom_max_width }}px;
+    {% endif %}
+  }
+
+  .ai-instagram-gallery__header-{{ ai_gen_id }} {
+    text-align: {{ block.settings.text_alignment }};
+    margin-bottom: 40px;
+  }
+
+  .ai-instagram-gallery__title-{{ ai_gen_id }} {
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 0 8px 0;
+    color: #000000cf;
+  }
+
+  .ai-instagram-gallery__heading-{{ ai_gen_id }} {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0 0 16px 0;
+    color: #000000;
+  }
+
+  .ai-instagram-gallery__social-link-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: #000000;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+  }
+
+  .ai-instagram-gallery__social-link-{{ ai_gen_id }}:hover {
+    background-color: #333333;
+  }
+
+  .ai-instagram-gallery__social-icon-{{ ai_gen_id }} {
+    width: 20px;
+    height: 20px;
+    fill: #ffffff;
+  }
+
+  .ai-instagram-gallery__grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat({{ block.settings.columns_desktop }}, 1fr);
+    gap: {{ block.settings.grid_gap }}px;
+  }
+
+  .ai-instagram-gallery__item-{{ ai_gen_id }} {
+    position: relative;
+    overflow: hidden;
+    border-radius: {{ block.settings.border_radius }}px;
+    height: {{ block.settings.image_height }}px;
+  }
+
+  .ai-instagram-gallery__link-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    text-decoration: none;
+  }
+
+  .ai-instagram-gallery__image-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .ai-instagram-gallery__overlay-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .ai-instagram-gallery__overlay-icon-{{ ai_gen_id }} {
+    width: 40px;
+    height: 40px;
+    fill: #ffffff;
+  }
+
+  .ai-instagram-gallery__link-{{ ai_gen_id }}:hover .ai-instagram-gallery__image-{{ ai_gen_id }} {
+    transform: scale(1.1);
+  }
+
+  .ai-instagram-gallery__link-{{ ai_gen_id }}:hover .ai-instagram-gallery__overlay-{{ ai_gen_id }} {
+    opacity: 1;
+  }
+
+  .ai-instagram-gallery__placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ai-instagram-gallery__placeholder-{{ ai_gen_id }} svg {
+    width: 60%;
+    height: 60%;
+    opacity: 0.3;
+  }
+
+  @media screen and (max-width: 989px) {
+    .ai-instagram-gallery__grid-{{ ai_gen_id }} {
+      grid-template-columns: repeat({{ block.settings.columns_tablet }}, 1fr);
+    }
+
+    .ai-instagram-gallery__heading-{{ ai_gen_id }} {
+      font-size: 24px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-instagram-gallery__grid-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+    }
+
+    .ai-instagram-gallery__heading-{{ ai_gen_id }} {
+      font-size: 20px;
+    }
+
+    .ai-instagram-gallery__item-{{ ai_gen_id }} {
+      height: {{ block.settings.image_height | times: 0.8 }}px;
+    }
+
+    .ai-instagram-gallery__container-{{ ai_gen_id }} {
+      padding: 0 16px;
+    }
+  }
+{% endstyle %}
+
+<instagram-gallery-{{ ai_gen_id }} class="ai-instagram-gallery-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-instagram-gallery__container-{{ ai_gen_id }}">
+    <div class="ai-instagram-gallery__header-{{ ai_gen_id }}">
+      {% if block.settings.title != blank %}
+        <div class="ai-instagram-gallery__title-{{ ai_gen_id }}">{{ block.settings.title }}</div>
+      {% endif %}
+
+      {% if block.settings.heading != blank %}
+        <h2 class="ai-instagram-gallery__heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+      {% endif %}
+
+      {% if block.settings.instagram_url != blank %}
+        <a
+          href="{{ block.settings.instagram_url }}"
+          class="ai-instagram-gallery__social-link-{{ ai_gen_id }}"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Follow us on Instagram"
+        >
+          <svg class="ai-instagram-gallery__social-icon-{{ ai_gen_id }}" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+          </svg>
+        </a>
+      {% endif %}
+    </div>
+
+    <div class="ai-instagram-gallery__grid-{{ ai_gen_id }}">
+      {% for i in (1..8) %}
+        {% liquid
+          assign image_key = 'image_' | append: i
+          assign link_key = 'image_link_' | append: i
+          assign image = block.settings[image_key]
+          assign link = block.settings[link_key]
+        %}
+
+        <div class="ai-instagram-gallery__item-{{ ai_gen_id }}">
+          {% if link != blank %}
+            <a
+              href="{{ link }}"
+              class="ai-instagram-gallery__link-{{ ai_gen_id }}"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+          {% else %}
+            <div class="ai-instagram-gallery__link-{{ ai_gen_id }}">
+          {% endif %}
+
+            {% if image != blank %}
+              <img
+                src="{{ image | image_url: width: 600 }}"
+                alt="{{ image.alt | escape }}"
+                loading="lazy"
+                width="600"
+                height="{{ block.settings.image_height }}"
+                class="ai-instagram-gallery__image-{{ ai_gen_id }}"
+              >
+              <div class="ai-instagram-gallery__overlay-{{ ai_gen_id }}">
+                <svg class="ai-instagram-gallery__overlay-icon-{{ ai_gen_id }}" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+              </div>
+            {% else %}
+              <div class="ai-instagram-gallery__placeholder-{{ ai_gen_id }}">
+                {{ 'image' | placeholder_svg_tag }}
+              </div>
+            {% endif %}
+
+          {% if link != blank %}
+            </a>
+          {% else %}
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</instagram-gallery-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class InstagramGallery{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.setupAccessibility();
+      }
+
+      setupAccessibility() {
+        const links = this.querySelectorAll('.ai-instagram-gallery__link-{{ ai_gen_id }}');
+        links.forEach((link, index) => {
+          if (link.tagName === 'A') {
+            const hasImage = link.querySelector('.ai-instagram-gallery__image-{{ ai_gen_id }}');
+            if (hasImage && !link.getAttribute('aria-label')) {
+              link.setAttribute('aria-label', 'View Instagram post ' + (index + 1));
+            }
+          }
+        });
+      }
+    }
+
+    customElements.define('instagram-gallery-{{ ai_gen_id }}', InstagramGallery{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Instagram gallery",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container width",
+      "options": [
+        {
+          "value": "full",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        },
+        {
+          "value": "custom",
+          "label": "Custom max width"
+        }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "range",
+      "id": "custom_max_width",
+      "label": "Max width",
+      "min": 800,
+      "max": 1800,
+      "step": 100,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Follow us"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Instagram"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram profile URL"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "columns_tablet",
+      "label": "Columns on tablet",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Grid gap",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Image style"
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "label": "Image height",
+      "min": 200,
+      "max": 500,
+      "step": 20,
+      "unit": "px",
+      "default": 300
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "default": 300
+    },
+    {
+      "type": "header",
+      "content": "Image 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "image_link_1",
+      "label": "Image link"
+    },
+    {
+      "type": "header",
+      "content": "Image 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "image_link_2",
+      "label": "Image link"
+    },
+    {
+      "type": "header",
+      "content": "Image 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "image_link_3",
+      "label": "Image link"
+    },
+    {
+      "type": "header",
+      "content": "Image 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_4",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "image_link_4",
+      "label": "Image link"
+    },
+    {
+      "type": "header",
+      "content": "Image 5"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_5",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "image_link_5",
+      "label": "Image link"
+    },
+    {
+      "type": "header",
+      "content": "Image 6"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_6",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "image_link_6",
+      "label": "Image link"
+    },
+    {
+      "type": "header",
+      "content": "Image 7"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_7",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "image_link_7",
+      "label": "Image link"
+    },
+    {
+      "type": "header",
+      "content": "Image 8"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_8",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "image_link_8",
+      "label": "Image link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Instagram gallery"
+    }
+  ]
+}
+{% endschema %}
