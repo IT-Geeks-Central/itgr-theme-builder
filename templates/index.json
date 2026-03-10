@@ -7,7 +7,27 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
-{
-  "sections": {},
-  "order": []
+ {
+  "sections": {
+    "zh_hero": {
+      "type": "zh-hero",
+      "name": "Hero",
+      "settings": {
+        "eyebrow": "Veteran Owned & Operated",
+        "heading": "Fuel When It Matters",
+        "subheading": "Performance Energy Built for Operators Under Pressure.",
+        "badge_1": "Veteran Owned",
+        "badge_2": "Zero Sugar",
+        "cta_primary_label": "Pre-Order Now",
+        "cta_secondary_label": "Explore Mission",
+        "fallback_bg_url": "https://framerusercontent.com/images/Fuc0CHp4CGwahWlDjAVMhNGTNKQ.png",
+        "fallback_hero_image_url": "https://framerusercontent.com/images/bzluHiLnC5Sy9mKjWjOYRLR2oAA.png",
+        "min_height": 860,
+        "overlay_opacity": 60
+      }
+    }
+  },
+  "order": [
+    "zh_hero"
+  ]
 }
