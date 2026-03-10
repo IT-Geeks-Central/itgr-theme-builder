@@ -1,15 +1,16 @@
 {% comment %}
   ZH Mission Brief Section
-  "BUILT FOR THE DISCIPLINED." — Image left, content right with stat badges
+  "BUILT FOR THE DISCIPLINED." — B&W image left, content + stats right
   FILE: sections/zh-mission-brief.liquid
 {% endcomment %}
 
 <section
-  class="zh-section zh-mission"
+  class="zh-mission"
   id="zh-mission-{{ section.id }}"
 >
   <div class="zh-container zh-mission__inner">
-    {%- comment %} Left: Product image {%- endcomment %}
+
+    {%- comment %} LEFT: B&W product / hand image {%- endcomment %}
     <div class="zh-mission__media">
       {%- if section.settings.image != blank -%}
         <img
@@ -17,7 +18,7 @@
           alt="{{ section.settings.image.alt | default: section.settings.heading }}"
           loading="lazy"
           width="700"
-          height="933"
+          height="920"
           class="zh-mission__img"
         >
       {%- else -%}
@@ -26,221 +27,183 @@
           alt="{{ section.settings.heading }}"
           loading="lazy"
           width="700"
-          height="933"
+          height="920"
           class="zh-mission__img"
         >
       {%- endif -%}
     </div>
 
-    {%- comment %} Right: Content {%- endcomment %}
+    {%- comment %} RIGHT: Content {%- endcomment %}
     <div class="zh-mission__content">
       {%- if section.settings.eyebrow != blank -%}
-        <p class="zh-eyebrow zh-mission__eyebrow">{{ section.settings.eyebrow }}</p>
+        <p class="zh-mission__eyebrow">{{ section.settings.eyebrow }}</p>
       {%- endif -%}
-
       {%- if section.settings.heading != blank -%}
         <h2 class="zh-mission__heading">{{ section.settings.heading }}</h2>
       {%- endif -%}
-
       {%- if section.settings.body_text != blank -%}
-        <div class="zh-mission__body">
-          {{ section.settings.body_text }}
-        </div>
+        <div class="zh-mission__body">{{ section.settings.body_text }}</div>
       {%- endif -%}
 
-      {%- comment %} Stat badges row {%- endcomment %}
+      {%- comment %} 4 stats in a row {%- endcomment %}
       <div class="zh-mission__stats">
-        {%- if section.settings.stat_1_label != blank -%}
-          <div class="zh-mission__stat">
-            <span class="zh-mission__stat-value">{{ section.settings.stat_1_value }}</span>
-            <span class="zh-mission__stat-label">{{ section.settings.stat_1_label }}</span>
-          </div>
-        {%- endif -%}
-        {%- if section.settings.stat_2_label != blank -%}
-          <div class="zh-mission__stat">
-            <span class="zh-mission__stat-value">{{ section.settings.stat_2_value }}</span>
-            <span class="zh-mission__stat-label">{{ section.settings.stat_2_label }}</span>
-          </div>
-        {%- endif -%}
-        {%- if section.settings.stat_3_label != blank -%}
-          <div class="zh-mission__stat">
-            <span class="zh-mission__stat-value">{{ section.settings.stat_3_value }}</span>
-            <span class="zh-mission__stat-label">{{ section.settings.stat_3_label }}</span>
-          </div>
-        {%- endif -%}
-        {%- if section.settings.stat_4_label != blank -%}
-          <div class="zh-mission__stat">
-            <span class="zh-mission__stat-value">{{ section.settings.stat_4_value }}</span>
-            <span class="zh-mission__stat-label">{{ section.settings.stat_4_label }}</span>
-          </div>
-        {%- endif -%}
+        {%- for i in (1..4) -%}
+          {%- liquid
+            assign val_key = 'stat_' | append: i | append: '_value'
+            assign lbl_key = 'stat_' | append: i | append: '_label'
+            assign s_val = section.settings[val_key]
+            assign s_lbl = section.settings[lbl_key]
+          -%}
+          {%- if s_lbl != blank -%}
+            <div class="zh-mission__stat">
+              {%- if s_val != blank -%}
+                <span class="zh-mission__stat-val">{{ s_val }}</span>
+              {%- endif -%}
+              <span class="zh-mission__stat-lbl">{{ s_lbl }}</span>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
       </div>
     </div>
+
   </div>
 </section>
 
 {% stylesheet %}
-  /* ============================================================
-     ZH MISSION BRIEF SECTION
-     ============================================================ */
-  .zh-mission {
-    background-color: #0f0f0f;
-    padding-block: clamp(60px, 8vw, 120px);
-    overflow: hidden;
-  }
+/* ================================================================
+   ZH MISSION BRIEF
+   ================================================================ */
+.zh-mission {
+  background-color: #0b0b0b;
+  padding-block: clamp(60px, 8vw, 110px);
+  overflow: hidden;
+  position: relative;
+}
+.zh-mission::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent);
+}
 
+.zh-mission__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: clamp(40px, 7vw, 100px);
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: clamp(20px, 5vw, 60px);
+}
+
+/* Image */
+.zh-mission__media { position: relative; }
+.zh-mission__img {
+  width: 100%;
+  max-height: 660px;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 6px;
+  filter: grayscale(100%) contrast(1.1) brightness(0.85);
+  display: block;
+}
+
+/* Content */
+.zh-mission__content {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 2vw, 22px);
+}
+.zh-mission__eyebrow {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.38);
+  margin: 0;
+}
+.zh-mission__heading {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(2.25rem, 4vw, 4.25rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0;
+}
+.zh-mission__body {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.55);
+}
+.zh-mission__body p { margin: 0 0 0.5em; }
+.zh-mission__body p:last-child { margin-bottom: 0; }
+
+/* Stats row */
+.zh-mission__stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-top: 8px;
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.zh-mission__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 18px 8px;
+  background: rgba(255,255,255,0.03);
+  border-right: 1px solid rgba(255,255,255,0.07);
+  text-align: center;
+  transition: background 0.2s ease;
+}
+.zh-mission__stat:last-child { border-right: none; }
+.zh-mission__stat:hover { background: rgba(255,255,255,0.06); }
+.zh-mission__stat-val {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(1.125rem, 1.8vw, 1.625rem);
+  color: #ffffff;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+.zh-mission__stat-lbl {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.42);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 899px) {
   .zh-mission__inner {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    gap: clamp(40px, 6vw, 100px);
+    grid-template-columns: 1fr;
+    gap: 36px;
   }
-
-  /* Left image */
-  .zh-mission__media {
-    position: relative;
-  }
-
-  .zh-mission__img {
-    width: 100%;
-    height: auto;
-    max-height: 680px;
-    object-fit: cover;
-    object-position: center top;
-    border-radius: 4px;
-    filter: grayscale(30%) contrast(1.05);
-  }
-
-  /* Right content */
-  .zh-mission__content {
-    display: flex;
-    flex-direction: column;
-    gap: clamp(16px, 2vw, 28px);
-  }
-
-  .zh-mission__eyebrow {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.45);
-    margin: 0;
-  }
-
-  .zh-mission__heading {
-    font-family: 'Anton', sans-serif;
-    font-size: clamp(2.25rem, 4vw, 4.5rem);
-    line-height: 1;
-    letter-spacing: -0.01em;
-    text-transform: uppercase;
-    color: #ffffff;
-    margin: 0;
-  }
-
-  .zh-mission__body {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1.0625rem;
-    line-height: 1.7;
-    color: rgba(255, 255, 255, 0.6);
-    max-width: 480px;
-  }
-
-  .zh-mission__body p {
-    margin: 0 0 0.5em;
-  }
-
-  .zh-mission__body p:last-child {
-    margin-bottom: 0;
-  }
-
-  /* Stats row */
-  .zh-mission__stats {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 6px;
-    overflow: hidden;
-    margin-top: 8px;
-  }
-
-  .zh-mission__stat {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    padding: 18px 10px;
-    background: rgba(255, 255, 255, 0.04);
-    text-align: center;
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
-    transition: background 0.2s ease;
-  }
-
-  .zh-mission__stat:last-child {
-    border-right: none;
-  }
-
-  .zh-mission__stat:hover {
-    background: rgba(255, 255, 255, 0.07);
-  }
-
-  .zh-mission__stat-value {
-    font-family: 'Anton', sans-serif;
-    font-size: clamp(1.25rem, 1.8vw, 1.75rem);
-    color: #ffffff;
-    line-height: 1;
-    letter-spacing: 0.02em;
-  }
-
-  .zh-mission__stat-label {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.6875rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.45);
-  }
-
-  /* ============================================================
-     RESPONSIVE
-     ============================================================ */
-  @media (max-width: 899px) {
-    .zh-mission__inner {
-      grid-template-columns: 1fr;
-      gap: 40px;
-    }
-
-    .zh-mission__img {
-      max-height: 420px;
-    }
-
-    .zh-mission__heading {
-      font-size: clamp(2rem, 8vw, 3rem);
-    }
-  }
-
-  @media (max-width: 599px) {
-    .zh-mission__stats {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .zh-mission__stat:nth-child(2) {
-      border-right: none;
-    }
-
-    .zh-mission__stat:nth-child(3) {
-      border-right: 1px solid rgba(255, 255, 255, 0.08);
-    }
-  }
+  .zh-mission__img { max-height: 380px; }
+}
+@media (max-width: 479px) {
+  .zh-mission__stats { grid-template-columns: repeat(2, 1fr); }
+  .zh-mission__stat:nth-child(2) { border-right: none; }
+  .zh-mission__stat:nth-child(3) { border-right: 1px solid rgba(255,255,255,0.07); }
+}
 {% endstylesheet %}
 
 {% schema %}
 {
   "name": "ZH Mission Brief",
-  "tag": null,
-  "class": "shopify-section",
+  "class": "zh-section-mission-brief",
   "settings": [
     {
       "type": "header",
@@ -323,7 +286,7 @@
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Product image"
+      "label": "Product / lifestyle image"
     },
     {
       "type": "text",

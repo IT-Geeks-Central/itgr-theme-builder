@@ -1,15 +1,16 @@
 {% comment %}
   ZH Pre-Order Pricing Section — "RESERVE YOUR STASH"
-  Image left + 3 pricing tier cards right
+  Split: Product image LEFT + Horizontal 3-tier pricing table RIGHT
   FILE: sections/zh-preorder-pricing.liquid
 {% endcomment %}
 
 <section
-  class="zh-section zh-pricing"
+  class="zh-pricing"
   id="zh-pricing-{{ section.id }}"
 >
   <div class="zh-container zh-pricing__inner">
-    {%- comment %} Left: Product Image {%- endcomment %}
+
+    {%- comment %} LEFT: Product image {%- endcomment %}
     <div class="zh-pricing__media">
       {%- if section.settings.product_image != blank -%}
         <img
@@ -32,66 +33,56 @@
       {%- endif -%}
     </div>
 
-    {%- comment %} Right: Pricing Content {%- endcomment %}
+    {%- comment %} RIGHT: Content + horizontal pricing table {%- endcomment %}
     <div class="zh-pricing__content">
       {%- if section.settings.eyebrow != blank -%}
-        <p class="zh-eyebrow zh-pricing__eyebrow">{{ section.settings.eyebrow }}</p>
+        <p class="zh-pricing__eyebrow">{{ section.settings.eyebrow }}</p>
       {%- endif -%}
-
       {%- if section.settings.sub_label != blank -%}
         <p class="zh-pricing__sub-label">{{ section.settings.sub_label }}</p>
       {%- endif -%}
-
       {%- if section.settings.heading != blank -%}
         <h2 class="zh-pricing__heading">{{ section.settings.heading }}</h2>
       {%- endif -%}
-
       {%- if section.settings.description != blank -%}
         <p class="zh-pricing__description">{{ section.settings.description }}</p>
       {%- endif -%}
 
-      {%- comment %} Pricing Tiers {%- endcomment %}
-      <div class="zh-pricing__tiers">
+      {%- comment %} Horizontal pricing table — 3 columns {%- endcomment %}
+      <div class="zh-pricing__table">
         {%- for i in (1..3) -%}
           {%- liquid
-            assign tier_name_key = 'tier_' | append: i | append: '_name'
-            assign tier_sub_key = 'tier_' | append: i | append: '_sub'
-            assign tier_price_key = 'tier_' | append: i | append: '_price'
-            assign tier_recommended_key = 'tier_' | append: i | append: '_recommended'
-
-            assign tier_name = section.settings[tier_name_key]
-            assign tier_sub = section.settings[tier_sub_key]
-            assign tier_price = section.settings[tier_price_key]
-            assign tier_recommended = section.settings[tier_recommended_key]
+            assign name_key = 'tier_' | append: i | append: '_name'
+            assign sub_key = 'tier_' | append: i | append: '_sub'
+            assign price_key = 'tier_' | append: i | append: '_price'
+            assign rec_key = 'tier_' | append: i | append: '_recommended'
+            assign t_name = section.settings[name_key]
+            assign t_sub = section.settings[sub_key]
+            assign t_price = section.settings[price_key]
+            assign t_rec = section.settings[rec_key]
           -%}
-          {%- if tier_name != blank -%}
-            <div class="zh-pricing__tier{% if tier_recommended %} zh-pricing__tier--recommended{% endif %}">
-              {%- if tier_recommended -%}
-                <span class="zh-pricing__tier-badge">Recommended</span>
+          {%- if t_name != blank -%}
+            <div class="zh-pricing__cell{% if t_rec %} zh-pricing__cell--rec{% endif %}">
+              {%- if t_rec -%}
+                <span class="zh-pricing__rec-badge">Best Value</span>
               {%- endif -%}
-              <div class="zh-pricing__tier-body">
-                <div class="zh-pricing__tier-info">
-                  <span class="zh-pricing__tier-name">{{ tier_name }}</span>
-                  {%- if tier_sub != blank -%}
-                    <span class="zh-pricing__tier-sub">{{ tier_sub }}</span>
-                  {%- endif -%}
-                </div>
-                <div class="zh-pricing__tier-price">
-                  {%- if tier_price != blank -%}
-                    <span class="zh-pricing__tier-price-val">{{ tier_price }}</span>
-                  {%- endif -%}
-                </div>
+              <div class="zh-pricing__cell-body">
+                <span class="zh-pricing__cell-name">{{ t_name }}</span>
+                {%- if t_sub != blank -%}
+                  <span class="zh-pricing__cell-sub">{{ t_sub }}</span>
+                {%- endif -%}
+                <span class="zh-pricing__cell-price">{{ t_price }}</span>
               </div>
             </div>
           {%- endif -%}
         {%- endfor -%}
       </div>
 
-      {%- comment %} CTA {%- endcomment %}
+      {%- comment %} CTA Button {%- endcomment %}
       {%- if section.settings.cta_label != blank -%}
         <a
           href="{{ section.settings.cta_url | default: '#' }}"
-          class="zh-btn zh-btn--primary zh-pricing__cta"
+          class="zh-pricing__cta"
         >
           {{ section.settings.cta_label }}
         </a>
@@ -105,210 +96,218 @@
 </section>
 
 {% stylesheet %}
-  /* ============================================================
-     ZH PRE-ORDER PRICING SECTION
-     ============================================================ */
-  .zh-pricing {
-    background-color: #0d0d0d;
-    padding-block: clamp(60px, 8vw, 100px);
-    overflow: hidden;
-    position: relative;
-  }
+/* ================================================================
+   ZH PRE-ORDER PRICING — Horizontal table layout
+   ================================================================ */
+.zh-pricing {
+  background-color: #0b0b0b;
+  padding-block: clamp(60px, 8vw, 100px);
+  overflow: hidden;
+  position: relative;
+}
 
-  .zh-pricing::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(
-      ellipse at 70% 50%,
-      rgba(255, 255, 255, 0.02) 0%,
-      transparent 60%
-    );
-    pointer-events: none;
-  }
+.zh-pricing__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: clamp(40px, 6vw, 90px);
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: clamp(20px, 5vw, 60px);
+}
 
+/* LEFT: Image */
+.zh-pricing__media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.zh-pricing__img {
+  width: 100%;
+  max-width: 460px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 30px 60px rgba(0,0,0,0.6));
+}
+
+/* RIGHT: Content */
+.zh-pricing__content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.zh-pricing__eyebrow {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.38);
+  margin: 0;
+}
+.zh-pricing__sub-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.28);
+  margin: 0;
+}
+.zh-pricing__heading {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(1.75rem, 3.5vw, 3.25rem);
+  line-height: 1;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0;
+}
+.zh-pricing__description {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9375rem;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Horizontal 3-column pricing table */
+.zh-pricing__table {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  margin-block: 6px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.zh-pricing__cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: rgba(255,255,255,0.03);
+  border-right: 1px solid rgba(255,255,255,0.08);
+  transition: background 0.2s ease;
+  cursor: pointer;
+}
+.zh-pricing__cell:last-child {
+  border-right: none;
+}
+.zh-pricing__cell:hover {
+  background: rgba(255,255,255,0.06);
+}
+.zh-pricing__cell--rec {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.18);
+}
+.zh-pricing__rec-badge {
+  display: block;
+  background: #ffffff;
+  color: #0b0b0b;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 5px 8px;
+}
+.zh-pricing__cell-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 18px 12px;
+  text-align: center;
+  flex: 1;
+}
+.zh-pricing__cell-name {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+  line-height: 1.2;
+}
+.zh-pricing__cell-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.6875rem;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.zh-pricing__cell-price {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.375rem;
+  color: #ffffff;
+  letter-spacing: 0.02em;
+  margin-top: 4px;
+}
+
+/* CTA */
+.zh-pricing__cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 14px 28px;
+  border-radius: 4px;
+  background: #ffffff;
+  color: #0b0b0b;
+  border: 1px solid #ffffff;
+  transition: background 0.2s ease;
+  margin-top: 4px;
+  cursor: pointer;
+}
+.zh-pricing__cta:hover {
+  background: #dedede;
+  border-color: #dedede;
+}
+.zh-pricing__disclaimer {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.3);
+  text-align: center;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 899px) {
   .zh-pricing__inner {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    gap: clamp(40px, 6vw, 100px);
-    position: relative;
+    grid-template-columns: 1fr;
+    gap: 40px;
   }
-
-  /* Left image */
-  .zh-pricing__media {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .zh-pricing__media { order: -1; }
+  .zh-pricing__img { max-width: 280px; }
+}
+@media (max-width: 479px) {
+  .zh-pricing__table {
+    grid-template-columns: 1fr;
   }
-
-  .zh-pricing__img {
-    width: 100%;
-    max-width: 480px;
-    height: auto;
-    object-fit: contain;
-    filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.5));
-    border-radius: 8px;
+  .zh-pricing__cell {
+    border-right: none;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
   }
-
-  /* Right content */
-  .zh-pricing__content {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  .zh-pricing__cell:last-child {
+    border-bottom: none;
   }
-
-  .zh-pricing__eyebrow {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.4);
-    margin: 0;
-  }
-
-  .zh-pricing__sub-label {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.8125rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.3);
-    margin: 0;
-  }
-
-  .zh-pricing__heading {
-    font-family: 'Anton', sans-serif;
-    font-size: clamp(2rem, 4vw, 3.5rem);
-    line-height: 1;
-    text-transform: uppercase;
-    color: #ffffff;
-    margin: 0;
-  }
-
-  .zh-pricing__description {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.55);
-    line-height: 1.6;
-    margin: 0;
-  }
-
-  /* Pricing tiers */
-  .zh-pricing__tiers {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-block: 8px;
-  }
-
-  .zh-pricing__tier {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 8px;
-    overflow: hidden;
-    transition: border-color 0.2s ease;
-    position: relative;
-    cursor: pointer;
-  }
-
-  .zh-pricing__tier:hover {
-    border-color: rgba(255, 255, 255, 0.2);
-  }
-
-  .zh-pricing__tier--recommended {
-    background: rgba(255, 255, 255, 0.07);
-    border-color: rgba(255, 255, 255, 0.22);
-  }
-
-  .zh-pricing__tier-badge {
-    display: block;
-    background: #ffffff;
-    color: #0b0b0b;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.625rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    padding: 5px 16px;
-    text-align: center;
-  }
-
-  .zh-pricing__tier-body {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 20px;
-    gap: 12px;
-  }
-
-  .zh-pricing__tier-info {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-  }
-
-  .zh-pricing__tier-name {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9375rem;
-    font-weight: 600;
-    color: #ffffff;
-    line-height: 1.3;
-  }
-
-  .zh-pricing__tier-sub {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.8125rem;
-    color: rgba(255, 255, 255, 0.45);
-  }
-
-  .zh-pricing__tier-price-val {
-    font-family: 'Anton', sans-serif;
-    font-size: 1.5rem;
-    color: #ffffff;
-    letter-spacing: 0.02em;
-  }
-
-  /* CTA */
-  .zh-pricing__cta {
-    width: 100%;
-    justify-content: center;
-    margin-top: 4px;
-  }
-
-  .zh-pricing__disclaimer {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.3);
-    text-align: center;
-    margin: 0;
-    line-height: 1.5;
-  }
-
-  /* ============================================================
-     RESPONSIVE
-     ============================================================ */
-  @media (max-width: 899px) {
-    .zh-pricing__inner {
-      grid-template-columns: 1fr;
-      gap: 40px;
-    }
-
-    .zh-pricing__media {
-      order: -1;
-    }
-
-    .zh-pricing__img {
-      max-width: 300px;
-    }
-  }
+}
 {% endstylesheet %}
 
 {% schema %}
 {
   "name": "ZH Pre-Order Pricing",
-  "tag": null,
-  "class": "shopify-section",
+  "class": "zh-section-preorder-pricing",
   "settings": [
     {
       "type": "header",
@@ -336,7 +335,7 @@
       "type": "text",
       "id": "description",
       "label": "Description",
-      "default": "Founders batch is strictly limited."
+      "default": "Founders batch is strictly limited. Founders list gets priority allocation and exclusive launch pricing."
     },
     {
       "type": "header",
@@ -351,7 +350,7 @@
     {
       "type": "text",
       "id": "tier_1_sub",
-      "label": "Tier 1 description",
+      "label": "Tier 1 sub label",
       "default": "Sample"
     },
     {
@@ -379,7 +378,7 @@
     {
       "type": "text",
       "id": "tier_2_sub",
-      "label": "Tier 2 description",
+      "label": "Tier 2 sub label",
       "default": "Starter"
     },
     {
@@ -407,7 +406,7 @@
     {
       "type": "text",
       "id": "tier_3_sub",
-      "label": "Tier 3 description",
+      "label": "Tier 3 sub label",
       "default": "Best Value"
     },
     {
@@ -461,7 +460,19 @@
   ],
   "presets": [
     {
-      "name": "ZH Pre-Order Pricing"
+      "name": "ZH Pre-Order Pricing",
+      "settings": {
+        "eyebrow": "Ships Q1 2026",
+        "heading": "Reserve Your Stash",
+        "tier_1_name": "Single Can",
+        "tier_1_price": "$4.99",
+        "tier_2_name": "4 Pack",
+        "tier_2_price": "$18.99",
+        "tier_3_name": "12-Can Case",
+        "tier_3_price": "$49.99",
+        "tier_3_recommended": true,
+        "cta_label": "Pre-Order Now"
+      }
     }
   ]
 }

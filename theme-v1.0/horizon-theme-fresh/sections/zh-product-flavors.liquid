@@ -1,28 +1,28 @@
 {% comment %}
   ZH Product Flavors Section — "OPERATIONAL LOADOUT"
-  4 flavor cards with dark tinted backgrounds
+  4 flavor cards with distinct colored atmospheric backgrounds
   FILE: sections/zh-product-flavors.liquid
 {% endcomment %}
 
 <section
-  class="zh-section zh-flavors"
+  class="zh-flavors"
   id="zh-flavors-{{ section.id }}"
 >
-  {%- comment %} Section header {%- endcomment %}
   <div class="zh-container">
+    {%- comment %} ── Section header ── {%- endcomment %}
     <div class="zh-flavors__header">
       {%- if section.settings.eyebrow != blank -%}
-        <p class="zh-eyebrow">{{ section.settings.eyebrow }}</p>
+        <p class="zh-flavors__eyebrow">{{ section.settings.eyebrow }}</p>
       {%- endif -%}
       {%- if section.settings.heading != blank -%}
         <h2 class="zh-flavors__heading">{{ section.settings.heading }}</h2>
       {%- endif -%}
       {%- if section.settings.subheading != blank -%}
-        <p class="zh-flavors__subheading">{{ section.settings.subheading }}</p>
+        <p class="zh-flavors__sub">{{ section.settings.subheading }}</p>
       {%- endif -%}
     </div>
 
-    {%- comment %} Flavor cards grid {%- endcomment %}
+    {%- comment %} ── 4 Flavor Cards ── {%- endcomment %}
     <div class="zh-flavors__grid">
       {%- for i in (1..4) -%}
         {%- liquid
@@ -32,6 +32,7 @@
           assign url_key = 'flavor_' | append: i | append: '_url'
           assign img_key = 'flavor_' | append: i | append: '_image'
           assign fallback_key = 'flavor_' | append: i | append: '_fallback_url'
+          assign bg_key = 'flavor_' | append: i | append: '_bg_url'
           assign accent_key = 'flavor_' | append: i | append: '_accent'
           assign rating_key = 'flavor_' | append: i | append: '_rating'
 
@@ -41,56 +42,62 @@
           assign flavor_url = section.settings[url_key]
           assign flavor_image = section.settings[img_key]
           assign flavor_fallback = section.settings[fallback_key]
+          assign flavor_bg = section.settings[bg_key]
           assign flavor_accent = section.settings[accent_key]
           assign flavor_rating = section.settings[rating_key]
         -%}
         {%- if flavor_name != blank -%}
           <article
             class="zh-flavor-card"
-            style="--flavor-accent: {{ flavor_accent }};"
+            style="--card-accent: {{ flavor_accent }};"
           >
-            <div class="zh-flavor-card__image-wrap">
+            {%- comment %} Card background image {%- endcomment %}
+            {%- if flavor_bg != blank -%}
+              <div class="zh-flavor-card__bg-img" style="background-image: url('{{ flavor_bg }}');"></div>
+            {%- endif -%}
+            <div class="zh-flavor-card__bg-overlay"></div>
+
+            {%- comment %} Can image {%- endcomment %}
+            <div class="zh-flavor-card__can-wrap">
               {%- if flavor_image != blank -%}
                 <img
-                  src="{{ flavor_image | image_url: width: 600 }}"
+                  src="{{ flavor_image | image_url: width: 500 }}"
                   alt="{{ flavor_image.alt | default: flavor_name }}"
                   loading="lazy"
-                  width="600"
-                  height="800"
-                  class="zh-flavor-card__img"
+                  width="500"
+                  height="700"
+                  class="zh-flavor-card__can-img"
                 >
               {%- elsif flavor_fallback != blank -%}
                 <img
                   src="{{ flavor_fallback }}"
                   alt="{{ flavor_name }}"
                   loading="lazy"
-                  width="600"
-                  height="800"
-                  class="zh-flavor-card__img"
+                  width="500"
+                  height="700"
+                  class="zh-flavor-card__can-img"
                 >
               {%- endif -%}
             </div>
 
+            {%- comment %} Card body {%- endcomment %}
             <div class="zh-flavor-card__body">
               {%- if flavor_rating != blank -%}
                 <div class="zh-flavor-card__rating">
-                  <span class="zh-stars">★★★★★</span>
+                  <span class="zh-flavor-card__stars">★★★★★</span>
                   <span class="zh-flavor-card__rating-val">{{ flavor_rating }}</span>
                 </div>
               {%- endif -%}
-
               {%- if flavor_name != blank -%}
                 <h3 class="zh-flavor-card__name">{{ flavor_name }}</h3>
               {%- endif -%}
-
               {%- if flavor_desc != blank -%}
                 <p class="zh-flavor-card__desc">{{ flavor_desc }}</p>
               {%- endif -%}
-
               {%- if flavor_btn != blank -%}
                 <a
                   href="{{ flavor_url | default: '#' }}"
-                  class="zh-flavor-card__btn zh-btn zh-btn--outline"
+                  class="zh-flavor-card__btn"
                 >
                   {{ flavor_btn }}
                 </a>
@@ -104,184 +111,202 @@
 </section>
 
 {% stylesheet %}
-  /* ============================================================
-     ZH PRODUCT FLAVORS SECTION
-     ============================================================ */
-  .zh-flavors {
-    background-color: #0b0b0b;
-    padding-block: clamp(60px, 8vw, 100px);
-  }
+/* ================================================================
+   ZH PRODUCT FLAVORS — Operational Loadout
+   ================================================================ */
+.zh-flavors {
+  background-color: #0b0b0b;
+  padding-block: clamp(60px, 8vw, 100px);
+}
 
-  .zh-flavors__header {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: clamp(40px, 5vw, 64px);
-  }
+.zh-flavors__header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: clamp(36px, 5vw, 56px);
+}
+.zh-flavors__eyebrow {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin: 0;
+}
+.zh-flavors__heading {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+  margin: 0;
+}
+.zh-flavors__sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8125rem;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin: 0;
+}
 
-  .zh-flavors__heading {
-    font-family: 'Anton', sans-serif;
-    font-size: clamp(2rem, 4vw, 3.5rem);
-    line-height: 1;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #ffffff;
-    margin: 0;
-  }
+/* Grid */
+.zh-flavors__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
 
-  .zh-flavors__subheading {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.45);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin: 0;
-  }
+/* Flavor Card */
+.zh-flavor-card {
+  position: relative;
+  background: var(--card-accent, #141414);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 460px;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+.zh-flavor-card:hover { transform: translateY(-6px); }
 
-  /* Grid */
+/* Card bg atmospheric image */
+.zh-flavor-card__bg-img {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.35;
+  transition: opacity 0.3s ease;
+}
+.zh-flavor-card:hover .zh-flavor-card__bg-img { opacity: 0.5; }
+.zh-flavor-card__bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0) 0%,
+    rgba(0,0,0,0.05) 40%,
+    rgba(0,0,0,0.75) 85%,
+    rgba(0,0,0,0.9) 100%
+  );
+}
+
+/* Can image */
+.zh-flavor-card__can-wrap {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 20px 16px;
+  min-height: 280px;
+}
+.zh-flavor-card__can-img {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  max-height: 280px;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 32px rgba(0,0,0,0.6));
+  transition: transform 0.35s ease;
+}
+.zh-flavor-card:hover .zh-flavor-card__can-img { transform: scale(1.05) translateY(-4px); }
+
+/* Card body */
+.zh-flavor-card__body {
+  position: relative;
+  z-index: 1;
+  padding: 16px 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.zh-flavor-card__rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.zh-flavor-card__stars {
+  font-size: 0.6875rem;
+  color: #f5c842;
+  letter-spacing: 1px;
+}
+.zh-flavor-card__rating-val {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.5);
+}
+.zh-flavor-card__name {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.1;
+  letter-spacing: 0.03em;
+}
+.zh-flavor-card__desc {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.5);
+  margin: 0;
+  line-height: 1.4;
+}
+.zh-flavor-card__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 10px 18px;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 4px;
+  color: #ffffff;
+  background: transparent;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  margin-top: 4px;
+  width: 100%;
+}
+.zh-flavor-card__btn:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.6);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1099px) {
   .zh-flavors__grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 16px;
   }
-
-  /* Flavor Card */
-  .zh-flavor-card {
-    background: var(--flavor-accent, #1a1a1a);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 8px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.25s ease, border-color 0.25s ease;
-    cursor: pointer;
+}
+@media (max-width: 599px) {
+  .zh-flavors__grid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+    margin-inline: auto;
   }
-
-  .zh-flavor-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(255, 255, 255, 0.2);
-  }
-
-  .zh-flavor-card__image-wrap {
-    aspect-ratio: 3/4;
-    overflow: hidden;
-    position: relative;
-    background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.04) 0%,
-      rgba(0, 0, 0, 0.2) 100%
-    );
-  }
-
-  .zh-flavor-card__img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    object-position: center;
-    padding: 20px;
-    transition: transform 0.35s ease;
-    box-sizing: border-box;
-  }
-
-  .zh-flavor-card:hover .zh-flavor-card__img {
-    transform: scale(1.04);
-  }
-
-  .zh-flavor-card__body {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    flex: 1;
-  }
-
-  .zh-flavor-card__rating {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .zh-flavor-card__rating .zh-stars {
-    font-size: 0.75rem;
-    color: #f5c842;
-  }
-
-  .zh-flavor-card__rating-val {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.6);
-  }
-
-  .zh-flavor-card__name {
-    font-family: 'Anton', sans-serif;
-    font-size: clamp(1.1rem, 1.5vw, 1.35rem);
-    text-transform: uppercase;
-    color: #ffffff;
-    margin: 0;
-    line-height: 1.1;
-    letter-spacing: 0.03em;
-  }
-
-  .zh-flavor-card__desc {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.8125rem;
-    color: rgba(255, 255, 255, 0.5);
-    margin: 0;
-    line-height: 1.5;
-    flex: 1;
-  }
-
-  .zh-flavor-card__btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.8125rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    text-decoration: none;
-    padding: 11px 20px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    border-radius: 4px;
-    color: #ffffff;
-    background: transparent;
-    transition: background 0.2s ease, border-color 0.2s ease;
-    margin-top: auto;
-  }
-
-  .zh-flavor-card__btn:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.5);
-  }
-
-  /* ============================================================
-     RESPONSIVE
-     ============================================================ */
-  @media (max-width: 1099px) {
-    .zh-flavors__grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-    }
-  }
-
-  @media (max-width: 599px) {
-    .zh-flavors__grid {
-      grid-template-columns: 1fr;
-      max-width: 380px;
-      margin-inline: auto;
-    }
-  }
+  .zh-flavor-card { min-height: 360px; }
+}
 {% endstylesheet %}
 
 {% schema %}
 {
   "name": "ZH Product Flavors",
-  "tag": null,
-  "class": "shopify-section",
+  "class": "zh-section-product-flavors",
   "settings": [
     {
       "type": "header",
@@ -335,19 +360,24 @@
     {
       "type": "image_picker",
       "id": "flavor_1_image",
-      "label": "Image"
+      "label": "Can image"
     },
     {
       "type": "text",
       "id": "flavor_1_fallback_url",
-      "label": "Fallback image URL",
+      "label": "Fallback can image URL",
       "default": "https://framerusercontent.com/images/VYB58er7oMuxbccPLOJid1tNPc.png"
+    },
+    {
+      "type": "text",
+      "id": "flavor_1_bg_url",
+      "label": "Card background image URL"
     },
     {
       "type": "color",
       "id": "flavor_1_accent",
-      "label": "Card background color",
-      "default": "#0d1a2e"
+      "label": "Card base color",
+      "default": "#0a1528"
     },
     {
       "type": "text",
@@ -385,19 +415,24 @@
     {
       "type": "image_picker",
       "id": "flavor_2_image",
-      "label": "Image"
+      "label": "Can image"
     },
     {
       "type": "text",
       "id": "flavor_2_fallback_url",
-      "label": "Fallback image URL",
+      "label": "Fallback can image URL",
       "default": "https://framerusercontent.com/images/bZlfViXKI7pFso6oYbF3rFz5aQ.png"
+    },
+    {
+      "type": "text",
+      "id": "flavor_2_bg_url",
+      "label": "Card background image URL"
     },
     {
       "type": "color",
       "id": "flavor_2_accent",
-      "label": "Card background color",
-      "default": "#1e1200"
+      "label": "Card base color",
+      "default": "#1e1000"
     },
     {
       "type": "text",
@@ -435,19 +470,24 @@
     {
       "type": "image_picker",
       "id": "flavor_3_image",
-      "label": "Image"
+      "label": "Can image"
     },
     {
       "type": "text",
       "id": "flavor_3_fallback_url",
-      "label": "Fallback image URL",
+      "label": "Fallback can image URL",
       "default": "https://framerusercontent.com/images/ypttwFogGUSwoOD9jZxuzVUDM8.png"
+    },
+    {
+      "type": "text",
+      "id": "flavor_3_bg_url",
+      "label": "Card background image URL"
     },
     {
       "type": "color",
       "id": "flavor_3_accent",
-      "label": "Card background color",
-      "default": "#160d20"
+      "label": "Card base color",
+      "default": "#12081e"
     },
     {
       "type": "text",
@@ -485,19 +525,24 @@
     {
       "type": "image_picker",
       "id": "flavor_4_image",
-      "label": "Image"
+      "label": "Can image"
     },
     {
       "type": "text",
       "id": "flavor_4_fallback_url",
-      "label": "Fallback image URL",
+      "label": "Fallback can image URL",
       "default": "https://framerusercontent.com/images/uEWpA90LX9drlNbHEv0qrICjD9E.png"
+    },
+    {
+      "type": "text",
+      "id": "flavor_4_bg_url",
+      "label": "Card background image URL"
     },
     {
       "type": "color",
       "id": "flavor_4_accent",
-      "label": "Card background color",
-      "default": "#0d1a0d"
+      "label": "Card base color",
+      "default": "#0a1a08"
     },
     {
       "type": "text",

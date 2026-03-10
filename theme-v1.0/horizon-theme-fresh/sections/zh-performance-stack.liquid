@@ -1,62 +1,72 @@
 {% comment %}
   ZH Performance Stack Section
-  "PERFORMANCE STACK" — Ingredient comparison + ingredient grid
+  Ingredient pills row + Comparison table (left) + Can image + ingredients (right)
   FILE: sections/zh-performance-stack.liquid
 {% endcomment %}
 
 <section
-  class="zh-section zh-perf"
+  class="zh-perf"
   id="zh-perf-{{ section.id }}"
 >
   <div class="zh-container">
-    {%- comment %} Section Header {%- endcomment %}
+
+    {%- comment %} ── Section Header ── {%- endcomment %}
     <div class="zh-perf__header">
       {%- if section.settings.eyebrow != blank -%}
-        <p class="zh-eyebrow">{{ section.settings.eyebrow }}</p>
+        <p class="zh-perf__eyebrow">{{ section.settings.eyebrow }}</p>
       {%- endif -%}
       {%- if section.settings.heading != blank -%}
         <h2 class="zh-perf__heading">{{ section.settings.heading }}</h2>
       {%- endif -%}
-      {%- if section.settings.subheading != blank -%}
-        <p class="zh-perf__subheading">{{ section.settings.subheading }}</p>
-      {%- endif -%}
     </div>
 
+    {%- comment %} ── Ingredient pills row ── {%- endcomment %}
+    <div class="zh-perf__pills">
+      {%- for i in (1..9) -%}
+        {%- assign name_key = 'ingr_' | append: i | append: '_name' -%}
+        {%- assign ingr_name = section.settings[name_key] -%}
+        {%- if ingr_name != blank -%}
+          <span class="zh-perf__pill">{{ ingr_name }}</span>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- comment %} ── Two-column body ── {%- endcomment %}
     <div class="zh-perf__body">
-      {%- comment %} Left: Comparison table {%- endcomment %}
-      <div class="zh-perf__comparison">
+
+      {%- comment %} LEFT: Comparison table {%- endcomment %}
+      <div class="zh-perf__compare-wrap">
         <div class="zh-perf__compare-table">
-          {%- comment %} Standard Drink column (negative) {%- endcomment %}
-          <div class="zh-perf__compare-col zh-perf__compare-col--bad">
-            <div class="zh-perf__compare-header">
-              <span class="zh-perf__compare-label zh-perf__compare-label--bad">{{ section.settings.col_bad_label | default: "Standard Issue" }}</span>
+          {%- comment %} Standard Issue column {%- endcomment %}
+          <div class="zh-perf__col zh-perf__col--bad">
+            <div class="zh-perf__col-head">
+              <span class="zh-perf__col-label zh-perf__col-label--bad">{{ section.settings.col_bad_label | default: "Standard Issue" }}</span>
             </div>
-            <ul class="zh-perf__compare-list">
+            <ul class="zh-perf__col-list">
               {%- for i in (1..5) -%}
-                {%- assign item_key = 'bad_item_' | append: i -%}
-                {%- if section.settings[item_key] != blank -%}
-                  <li class="zh-perf__compare-item zh-perf__compare-item--bad">
-                    <span class="zh-perf__compare-icon zh-perf__compare-icon--bad">✕</span>
-                    {{ section.settings[item_key] }}
+                {%- assign key = 'bad_item_' | append: i -%}
+                {%- if section.settings[key] != blank -%}
+                  <li class="zh-perf__item zh-perf__item--bad">
+                    <span class="zh-perf__icon zh-perf__icon--bad">✕</span>
+                    {{ section.settings[key] }}
                   </li>
                 {%- endif -%}
               {%- endfor -%}
             </ul>
           </div>
-
-          {%- comment %} Zero Hour column (positive) {%- endcomment %}
-          <div class="zh-perf__compare-col zh-perf__compare-col--good">
-            <div class="zh-perf__compare-header">
-              <span class="zh-perf__compare-label zh-perf__compare-label--good">{{ section.settings.col_good_label | default: "Zero Hour Drink" }}</span>
-              <span class="zh-perf__compare-badge">SUPERIOR</span>
+          {%- comment %} Zero Hour column {%- endcomment %}
+          <div class="zh-perf__col zh-perf__col--good">
+            <div class="zh-perf__col-head">
+              <span class="zh-perf__col-label zh-perf__col-label--good">{{ section.settings.col_good_label | default: "Zero Hour Drink" }}</span>
+              <span class="zh-perf__superior">SUPERIOR</span>
             </div>
-            <ul class="zh-perf__compare-list">
+            <ul class="zh-perf__col-list">
               {%- for i in (1..5) -%}
-                {%- assign item_key = 'good_item_' | append: i -%}
-                {%- if section.settings[item_key] != blank -%}
-                  <li class="zh-perf__compare-item zh-perf__compare-item--good">
-                    <span class="zh-perf__compare-icon zh-perf__compare-icon--good">✓</span>
-                    {{ section.settings[item_key] }}
+                {%- assign key = 'good_item_' | append: i -%}
+                {%- if section.settings[key] != blank -%}
+                  <li class="zh-perf__item zh-perf__item--good">
+                    <span class="zh-perf__icon zh-perf__icon--good">✓</span>
+                    {{ section.settings[key] }}
                   </li>
                 {%- endif -%}
               {%- endfor -%}
@@ -65,23 +75,44 @@
         </div>
       </div>
 
-      {%- comment %} Right: Ingredients grid {%- endcomment %}
-      <div class="zh-perf__ingredients">
-        <div class="zh-perf__ingr-grid">
+      {%- comment %} RIGHT: Can image + ingredient list {%- endcomment %}
+      <div class="zh-perf__right">
+        <div class="zh-perf__can-wrap">
+          {%- if section.settings.can_image != blank -%}
+            <img
+              src="{{ section.settings.can_image | image_url: width: 600 }}"
+              alt="Zero Hour Drink performance can"
+              loading="lazy"
+              width="600"
+              height="600"
+              class="zh-perf__can-img"
+            >
+          {%- elsif section.settings.can_fallback_url != blank -%}
+            <img
+              src="{{ section.settings.can_fallback_url }}"
+              alt="Zero Hour Drink performance can"
+              loading="lazy"
+              width="600"
+              height="600"
+              class="zh-perf__can-img"
+            >
+          {%- endif -%}
+        </div>
+        <div class="zh-perf__ingr-list">
           {%- for i in (1..9) -%}
             {%- liquid
-              assign ingr_name_key = 'ingr_' | append: i | append: '_name'
-              assign ingr_desc_key = 'ingr_' | append: i | append: '_desc'
-              assign ingr_name = section.settings[ingr_name_key]
-              assign ingr_desc = section.settings[ingr_desc_key]
+              assign name_key = 'ingr_' | append: i | append: '_name'
+              assign desc_key = 'ingr_' | append: i | append: '_desc'
+              assign ingr_name = section.settings[name_key]
+              assign ingr_desc = section.settings[desc_key]
             -%}
             {%- if ingr_name != blank -%}
-              <div class="zh-perf__ingr-card">
+              <div class="zh-perf__ingr-row">
                 <div class="zh-perf__ingr-dot"></div>
-                <div class="zh-perf__ingr-content">
-                  <span class="zh-perf__ingr-name">{{ ingr_name }}</span>
+                <div>
+                  <p class="zh-perf__ingr-name">{{ ingr_name }}</p>
                   {%- if ingr_desc != blank -%}
-                    <span class="zh-perf__ingr-desc">{{ ingr_desc }}</span>
+                    <p class="zh-perf__ingr-desc">{{ ingr_desc }}</p>
                   {%- endif -%}
                 </div>
               </div>
@@ -89,266 +120,247 @@
           {%- endfor -%}
         </div>
       </div>
+
     </div>
   </div>
 </section>
 
 {% stylesheet %}
-  /* ============================================================
-     ZH PERFORMANCE STACK SECTION
-     ============================================================ */
-  .zh-perf {
-    background-color: #0b0b0b;
-    padding-block: clamp(60px, 8vw, 100px);
-    position: relative;
-    overflow: hidden;
-  }
+/* ================================================================
+   ZH PERFORMANCE STACK
+   ================================================================ */
+.zh-perf {
+  background-color: #0b0b0b;
+  padding-block: clamp(60px, 8vw, 100px);
+  overflow: hidden;
+  position: relative;
+}
+.zh-perf::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 20% 60%, rgba(47,58,47,0.07) 0%, transparent 55%);
+  pointer-events: none;
+}
+.zh-perf > .zh-container { position: relative; }
 
-  .zh-perf::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      radial-gradient(circle at 20% 50%, rgba(47, 58, 47, 0.08) 0%, transparent 60%),
-      radial-gradient(circle at 80% 30%, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
-    pointer-events: none;
-  }
+/* Header */
+.zh-perf__header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+.zh-perf__eyebrow {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.38);
+  margin: 0;
+}
+.zh-perf__heading {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+  margin: 0;
+}
 
-  .zh-perf__header {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: clamp(40px, 5vw, 64px);
-    position: relative;
-  }
+/* Ingredient pills */
+.zh-perf__pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: clamp(36px, 5vw, 60px);
+  padding-inline: clamp(0px, 5vw, 60px);
+}
+.zh-perf__pill {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.55);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 6px 14px;
+  border-radius: 100px;
+  white-space: nowrap;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.zh-perf__pill:hover {
+  border-color: rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.8);
+}
 
-  .zh-perf__heading {
-    font-family: 'Anton', sans-serif;
-    font-size: clamp(2rem, 4vw, 3.5rem);
-    line-height: 1;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #ffffff;
-    margin: 0;
-  }
+/* Two-column body */
+.zh-perf__body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(32px, 5vw, 72px);
+  align-items: start;
+}
 
-  .zh-perf__subheading {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.45);
-    letter-spacing: 0.04em;
-    max-width: 500px;
-    line-height: 1.6;
-    margin: 0;
-    text-align: center;
-  }
+/* Comparison table */
+.zh-perf__compare-table {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.zh-perf__col--bad { background: rgba(255,255,255,0.02); }
+.zh-perf__col--good { background: rgba(47,58,47,0.12); }
 
-  /* Body: two columns */
+.zh-perf__col-head {
+  padding: 16px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.zh-perf__col-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.zh-perf__col-label--bad { color: rgba(255,255,255,0.35); }
+.zh-perf__col-label--good { color: #ffffff; }
+.zh-perf__superior {
+  display: inline-block;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #0b0b0b;
+  background: #ffffff;
+  padding: 3px 8px;
+  border-radius: 100px;
+  width: fit-content;
+}
+.zh-perf__col-list {
+  list-style: none;
+  margin: 0;
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+.zh-perf__item {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8125rem;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  line-height: 1.4;
+}
+.zh-perf__item--bad {
+  color: rgba(255,255,255,0.3);
+  text-decoration: line-through;
+  text-decoration-color: rgba(255,255,255,0.12);
+}
+.zh-perf__item--good { color: rgba(255,255,255,0.82); }
+.zh-perf__icon {
+  flex-shrink: 0;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.5625rem;
+  font-weight: 700;
+}
+.zh-perf__icon--bad { background: rgba(255,60,60,0.1); color: rgba(255,80,80,0.6); }
+.zh-perf__icon--good { background: rgba(47,58,47,0.4); color: #6db86d; }
+
+/* RIGHT: Can + ingredients */
+.zh-perf__right {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.zh-perf__can-wrap {
+  display: flex;
+  justify-content: center;
+}
+.zh-perf__can-img {
+  width: 100%;
+  max-width: 260px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 16px 40px rgba(0,0,0,0.5));
+}
+.zh-perf__ingr-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.zh-perf__ingr-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.02);
+  transition: background 0.2s ease;
+}
+.zh-perf__ingr-row:last-child { border-bottom: none; }
+.zh-perf__ingr-row:hover { background: rgba(255,255,255,0.04); }
+.zh-perf__ingr-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+.zh-perf__ingr-name {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 2px;
+  line-height: 1.3;
+}
+.zh-perf__ingr-desc {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.45);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 899px) {
   .zh-perf__body {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(32px, 5vw, 80px);
-    align-items: start;
-    position: relative;
-  }
-
-  /* ---- COMPARISON TABLE ---- */
-  .zh-perf__comparison {
-    position: sticky;
-    top: 80px;
-  }
-
-  .zh-perf__compare-table {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 10px;
-    overflow: hidden;
-  }
-
-  .zh-perf__compare-col {
-    padding: 0;
-  }
-
-  .zh-perf__compare-col--bad {
-    background: rgba(255, 255, 255, 0.02);
-  }
-
-  .zh-perf__compare-col--good {
-    background: rgba(47, 58, 47, 0.15);
-  }
-
-  .zh-perf__compare-header {
-    padding: 16px 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .zh-perf__compare-label {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  .zh-perf__compare-label--bad {
-    color: rgba(255, 255, 255, 0.4);
-  }
-
-  .zh-perf__compare-label--good {
-    color: #ffffff;
-  }
-
-  .zh-perf__compare-badge {
-    display: inline-block;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.625rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: #0b0b0b;
-    background: #ffffff;
-    padding: 3px 8px;
-    border-radius: 100px;
-    width: fit-content;
-  }
-
-  .zh-perf__compare-list {
-    list-style: none;
-    margin: 0;
-    padding: 16px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .zh-perf__compare-item {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.875rem;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    line-height: 1.4;
-  }
-
-  .zh-perf__compare-item--bad {
-    color: rgba(255, 255, 255, 0.35);
-    text-decoration: line-through;
-    text-decoration-color: rgba(255, 255, 255, 0.15);
-  }
-
-  .zh-perf__compare-item--good {
-    color: rgba(255, 255, 255, 0.85);
-  }
-
-  .zh-perf__compare-icon {
-    flex-shrink: 0;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.625rem;
-    font-weight: 700;
-  }
-
-  .zh-perf__compare-icon--bad {
-    background: rgba(255, 60, 60, 0.12);
-    color: rgba(255, 60, 60, 0.6);
-  }
-
-  .zh-perf__compare-icon--good {
-    background: rgba(47, 58, 47, 0.4);
-    color: #6db86d;
-  }
-
-  /* ---- INGREDIENTS GRID ---- */
-  .zh-perf__ingr-grid {
-    display: grid;
     grid-template-columns: 1fr;
-    gap: 1px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 10px;
-    overflow: hidden;
+    gap: 40px;
   }
-
-  .zh-perf__ingr-card {
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
-    padding: 18px 24px;
-    background: rgba(255, 255, 255, 0.02);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    transition: background 0.2s ease;
-  }
-
-  .zh-perf__ingr-card:last-child {
-    border-bottom: none;
-  }
-
-  .zh-perf__ingr-card:hover {
-    background: rgba(255, 255, 255, 0.04);
-  }
-
-  .zh-perf__ingr-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
-    flex-shrink: 0;
-    margin-top: 6px;
-  }
-
-  .zh-perf__ingr-content {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-  }
-
-  .zh-perf__ingr-name {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9375rem;
-    font-weight: 600;
-    color: #ffffff;
-    line-height: 1.3;
-  }
-
-  .zh-perf__ingr-desc {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.8125rem;
-    color: rgba(255, 255, 255, 0.5);
-    line-height: 1.5;
-  }
-
-  /* ============================================================
-     RESPONSIVE
-     ============================================================ */
-  @media (max-width: 899px) {
-    .zh-perf__body {
-      grid-template-columns: 1fr;
-      gap: 40px;
-    }
-
-    .zh-perf__comparison {
-      position: static;
-    }
-  }
+  .zh-perf__can-wrap { display: none; }
+}
 {% endstylesheet %}
 
 {% schema %}
 {
   "name": "ZH Performance Stack",
-  "tag": null,
-  "class": "shopify-section",
+  "class": "zh-section-performance-stack",
   "settings": [
     {
       "type": "header",
@@ -365,12 +377,6 @@
       "id": "heading",
       "label": "Heading",
       "default": "Performance Stack"
-    },
-    {
-      "type": "text",
-      "id": "subheading",
-      "label": "Subheading",
-      "default": "No fillers. No proprietary blends. Just effective, clinical dosages designed for the field."
     },
     {
       "type": "header",
@@ -455,7 +461,7 @@
     {
       "type": "text",
       "id": "ingr_1_name",
-      "label": "Ingredient 1 name",
+      "label": "Ingredient 1",
       "default": "Green Tea Extract"
     },
     {
@@ -467,7 +473,7 @@
     {
       "type": "text",
       "id": "ingr_2_name",
-      "label": "Ingredient 2 name",
+      "label": "Ingredient 2",
       "default": "L-Theanine"
     },
     {
@@ -479,7 +485,7 @@
     {
       "type": "text",
       "id": "ingr_3_name",
-      "label": "Ingredient 3 name",
+      "label": "Ingredient 3",
       "default": "Alpha GPC"
     },
     {
@@ -491,7 +497,7 @@
     {
       "type": "text",
       "id": "ingr_4_name",
-      "label": "Ingredient 4 name",
+      "label": "Ingredient 4",
       "default": "L-Citrulline Malate"
     },
     {
@@ -503,7 +509,7 @@
     {
       "type": "text",
       "id": "ingr_5_name",
-      "label": "Ingredient 5 name",
+      "label": "Ingredient 5",
       "default": "N-Acetyl L-Tyrosine"
     },
     {
@@ -515,7 +521,7 @@
     {
       "type": "text",
       "id": "ingr_6_name",
-      "label": "Ingredient 6 name",
+      "label": "Ingredient 6",
       "default": "Sustamine"
     },
     {
@@ -527,7 +533,7 @@
     {
       "type": "text",
       "id": "ingr_7_name",
-      "label": "Ingredient 7 name",
+      "label": "Ingredient 7",
       "default": "Lion's Mane"
     },
     {
@@ -539,7 +545,7 @@
     {
       "type": "text",
       "id": "ingr_8_name",
-      "label": "Ingredient 8 name",
+      "label": "Ingredient 8",
       "default": "Rhodiola"
     },
     {
@@ -551,7 +557,7 @@
     {
       "type": "text",
       "id": "ingr_9_name",
-      "label": "Ingredient 9 name",
+      "label": "Ingredient 9",
       "default": "Electrolytes"
     },
     {
@@ -559,11 +565,30 @@
       "id": "ingr_9_desc",
       "label": "Ingredient 9 description",
       "default": "Supports hydration balance and muscle function."
+    },
+    {
+      "type": "header",
+      "content": "Can Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "can_image",
+      "label": "Can image"
+    },
+    {
+      "type": "text",
+      "id": "can_fallback_url",
+      "label": "Fallback can image URL",
+      "default": "https://framerusercontent.com/images/Y0OJ2TNZFeGf6pLOmDgu2ve9xM.png"
     }
   ],
   "presets": [
     {
-      "name": "ZH Performance Stack"
+      "name": "ZH Performance Stack",
+      "settings": {
+        "eyebrow": "What's Inside",
+        "heading": "Performance Stack"
+      }
     }
   ]
 }

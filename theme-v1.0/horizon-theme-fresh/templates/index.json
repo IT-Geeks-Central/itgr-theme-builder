@@ -1,16 +1,8 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */{
+{
   "sections": {
     "zh_hero": {
       "type": "zh-hero",
-      "name": "Hero",
+      "name": "ZH Hero",
       "settings": {
         "eyebrow": "Veteran Owned & Operated",
         "heading": "Fuel When It Matters",
@@ -27,7 +19,7 @@
     },
     "zh_mission": {
       "type": "zh-mission-brief",
-      "name": "Mission Brief",
+      "name": "ZH Mission Brief",
       "settings": {
         "eyebrow": "Mission Brief",
         "heading": "Built for the Disciplined.",
@@ -45,7 +37,7 @@
     },
     "zh_flavors": {
       "type": "zh-product-flavors",
-      "name": "Operational Loadout",
+      "name": "ZH Operational Loadout",
       "settings": {
         "eyebrow": "Limited First Production Run // Founders Batch",
         "heading": "Operational Loadout",
@@ -78,7 +70,7 @@
     },
     "zh_performance": {
       "type": "zh-performance-stack",
-      "name": "Performance Stack",
+      "name": "ZH Performance Stack",
       "settings": {
         "eyebrow": "What's Inside",
         "heading": "Performance Stack",
@@ -112,12 +104,13 @@
         "ingr_8_name": "Rhodiola",
         "ingr_8_desc": "Supports resilience and balanced stress response.",
         "ingr_9_name": "Electrolytes",
-        "ingr_9_desc": "Supports hydration balance and muscle function."
+        "ingr_9_desc": "Supports hydration balance and muscle function.",
+        "can_fallback_url": "https://framerusercontent.com/images/Y0OJ2TNZFeGf6pLOmDgu2ve9xM.png"
       }
     },
     "zh_statement": {
       "type": "zh-brand-statement",
-      "name": "Brand Statement",
+      "name": "ZH Brand Statement",
       "settings": {
         "eyebrow": "Veteran Owned & Operated",
         "heading": "Service. Integrity. Discipline.",
@@ -126,7 +119,7 @@
     },
     "zh_showcase": {
       "type": "zh-product-showcase",
-      "name": "Product Showcase",
+      "name": "ZH Product Showcase",
       "settings": {
         "fallback_image_url": "https://framerusercontent.com/images/lsmHwqZ5gDn2ISZs8huBHLwThA.jpg",
         "show_flavor_labels": true
@@ -134,67 +127,108 @@
     },
     "zh_marquee": {
       "type": "marquee",
-      "name": "Marquee Ticker",
+      "name": "ZH Marquee Ticker",
       "blocks": {
-        "marquee_item_1": {
+        "m1": {
           "type": "text",
           "settings": {
-            "text": "CONTROLLED INTENSITY.",
-            "type_preset": "h5"
+            "text": "DARK BERRY",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "14px",
+            "line_height": "tight",
+            "letter_spacing": "wide",
+            "case": "uppercase",
+            "wrap": "nowrap",
+            "width": "fit-content"
           }
         },
-        "marquee_item_2": {
+        "m2": {
+          "type": "_divider"
+        },
+        "m3": {
           "type": "text",
           "settings": {
-            "text": "VETERAN OWNED & OPERATED.",
-            "type_preset": "h5"
+            "text": "CONTROLLED INTENSITY",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "14px",
+            "line_height": "tight",
+            "letter_spacing": "wide",
+            "case": "uppercase",
+            "wrap": "nowrap",
+            "width": "fit-content"
           }
         },
-        "marquee_item_3": {
+        "m4": {
+          "type": "_divider"
+        },
+        "m5": {
           "type": "text",
           "settings": {
-            "text": "ZERO ADVANTAGE.",
-            "type_preset": "h5"
+            "text": "MISSION MANGO FRESH",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "14px",
+            "line_height": "tight",
+            "letter_spacing": "wide",
+            "case": "uppercase",
+            "wrap": "nowrap",
+            "width": "fit-content"
           }
         },
-        "marquee_item_4": {
+        "m6": {
+          "type": "_divider"
+        },
+        "m7": {
           "type": "text",
           "settings": {
-            "text": "DISCIPLINED PERFORMANCE.",
-            "type_preset": "h5"
+            "text": "TACTICAL CITRUS FRESH",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "14px",
+            "line_height": "tight",
+            "letter_spacing": "wide",
+            "case": "uppercase",
+            "wrap": "nowrap",
+            "width": "fit-content"
           }
         },
-        "marquee_item_5": {
+        "m8": {
+          "type": "_divider"
+        },
+        "m9": {
           "type": "text",
           "settings": {
-            "text": "VERIFIED RESULTS.",
-            "type_preset": "h5"
+            "text": "ARCTIC STRIKE",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "14px",
+            "line_height": "tight",
+            "letter_spacing": "wide",
+            "case": "uppercase",
+            "wrap": "nowrap",
+            "width": "fit-content"
           }
         }
       },
-      "block_order": [
-        "marquee_item_1",
-        "marquee_item_2",
-        "marquee_item_3",
-        "marquee_item_4",
-        "marquee_item_5"
-      ],
+      "block_order": ["m1","m2","m3","m4","m5","m6","m7","m8","m9"],
       "settings": {
         "gap_between_elements": 48,
         "movement_direction": "left",
         "color_scheme": "scheme-5",
-        "padding-block-start": 16,
-        "padding-block-end": 16
+        "padding-block-start": 14,
+        "padding-block-end": 14
       }
     },
     "zh_pricing": {
       "type": "zh-preorder-pricing",
-      "name": "Reserve Your Stash",
+      "name": "ZH Reserve Your Stash",
       "settings": {
         "eyebrow": "Ships Q1 2026",
         "sub_label": "Secure Your Drop",
         "heading": "Reserve Your Stash",
-        "description": "Founders batch is strictly limited.",
+        "description": "Founders batch is strictly limited. Founders list gets priority allocation and exclusive launch pricing.",
         "tier_1_name": "Single Can",
         "tier_1_sub": "Sample",
         "tier_1_price": "$4.99",
@@ -214,7 +248,7 @@
     },
     "zh_reviews": {
       "type": "zh-reviews",
-      "name": "Customer Reviews",
+      "name": "ZH Customer Reviews",
       "settings": {
         "heading": "Customer Reviews",
         "avg_rating_label": "Average Rating",
@@ -238,7 +272,7 @@
     },
     "zh_qr": {
       "type": "zh-qr-brief",
-      "name": "QR Brief",
+      "name": "ZH QR Brief",
       "settings": {
         "eyebrow": "Discipline in Action",
         "heading": "Strength Beyond The Physical.",
@@ -249,7 +283,7 @@
     },
     "zh_instagram": {
       "type": "zh-instagram-grid",
-      "name": "Instagram Grid",
+      "name": "ZH Instagram Grid",
       "settings": {
         "handle": "@ZeroHourDrink",
         "photo_1_fallback": "https://framerusercontent.com/images/HpeQbtsCjUgTtGcFW7ZhZe5LU.png",
@@ -261,7 +295,7 @@
     },
     "zh_faq": {
       "type": "zh-faq",
-      "name": "FAQ",
+      "name": "ZH FAQ",
       "settings": {
         "eyebrow": "We've covered the most common topics below.",
         "heading": "Frequently Asked Questions",
@@ -280,7 +314,7 @@
     },
     "zh_ambassador": {
       "type": "zh-ambassador",
-      "name": "Ambassador",
+      "name": "ZH Ambassador",
       "settings": {
         "eyebrow": "Team Zero Hour",
         "heading": "Built for Leaders.",
@@ -291,7 +325,7 @@
     },
     "zh_footer_cta": {
       "type": "zh-footer-cta",
-      "name": "Footer CTA",
+      "name": "ZH Footer CTA",
       "settings": {
         "heading": "When It's Zero Hour Be Ready.",
         "cta_label": "Pre-Order Now",
