@@ -1,0 +1,532 @@
+{% comment %}
+  ZH Product Flavors Section — "OPERATIONAL LOADOUT"
+  4 flavor cards with dark tinted backgrounds
+  FILE: sections/zh-product-flavors.liquid
+{% endcomment %}
+
+<section
+  class="zh-section zh-flavors"
+  id="zh-flavors-{{ section.id }}"
+>
+  {%- comment %} Section header {%- endcomment %}
+  <div class="zh-container">
+    <div class="zh-flavors__header">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="zh-eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="zh-flavors__heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p class="zh-flavors__subheading">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- comment %} Flavor cards grid {%- endcomment %}
+    <div class="zh-flavors__grid">
+      {%- for i in (1..4) -%}
+        {%- liquid
+          assign name_key = 'flavor_' | append: i | append: '_name'
+          assign desc_key = 'flavor_' | append: i | append: '_desc'
+          assign btn_key = 'flavor_' | append: i | append: '_btn'
+          assign url_key = 'flavor_' | append: i | append: '_url'
+          assign img_key = 'flavor_' | append: i | append: '_image'
+          assign fallback_key = 'flavor_' | append: i | append: '_fallback_url'
+          assign accent_key = 'flavor_' | append: i | append: '_accent'
+          assign rating_key = 'flavor_' | append: i | append: '_rating'
+
+          assign flavor_name = section.settings[name_key]
+          assign flavor_desc = section.settings[desc_key]
+          assign flavor_btn = section.settings[btn_key]
+          assign flavor_url = section.settings[url_key]
+          assign flavor_image = section.settings[img_key]
+          assign flavor_fallback = section.settings[fallback_key]
+          assign flavor_accent = section.settings[accent_key]
+          assign flavor_rating = section.settings[rating_key]
+        -%}
+        {%- if flavor_name != blank -%}
+          <article
+            class="zh-flavor-card"
+            style="--flavor-accent: {{ flavor_accent }};"
+          >
+            <div class="zh-flavor-card__image-wrap">
+              {%- if flavor_image != blank -%}
+                <img
+                  src="{{ flavor_image | image_url: width: 600 }}"
+                  alt="{{ flavor_image.alt | default: flavor_name }}"
+                  loading="lazy"
+                  width="600"
+                  height="800"
+                  class="zh-flavor-card__img"
+                >
+              {%- elsif flavor_fallback != blank -%}
+                <img
+                  src="{{ flavor_fallback }}"
+                  alt="{{ flavor_name }}"
+                  loading="lazy"
+                  width="600"
+                  height="800"
+                  class="zh-flavor-card__img"
+                >
+              {%- endif -%}
+            </div>
+
+            <div class="zh-flavor-card__body">
+              {%- if flavor_rating != blank -%}
+                <div class="zh-flavor-card__rating">
+                  <span class="zh-stars">★★★★★</span>
+                  <span class="zh-flavor-card__rating-val">{{ flavor_rating }}</span>
+                </div>
+              {%- endif -%}
+
+              {%- if flavor_name != blank -%}
+                <h3 class="zh-flavor-card__name">{{ flavor_name }}</h3>
+              {%- endif -%}
+
+              {%- if flavor_desc != blank -%}
+                <p class="zh-flavor-card__desc">{{ flavor_desc }}</p>
+              {%- endif -%}
+
+              {%- if flavor_btn != blank -%}
+                <a
+                  href="{{ flavor_url | default: '#' }}"
+                  class="zh-flavor-card__btn zh-btn zh-btn--outline"
+                >
+                  {{ flavor_btn }}
+                </a>
+              {%- endif -%}
+            </div>
+          </article>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  /* ============================================================
+     ZH PRODUCT FLAVORS SECTION
+     ============================================================ */
+  .zh-flavors {
+    background-color: #0b0b0b;
+    padding-block: clamp(60px, 8vw, 100px);
+  }
+
+  .zh-flavors__header {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: clamp(40px, 5vw, 64px);
+  }
+
+  .zh-flavors__heading {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #ffffff;
+    margin: 0;
+  }
+
+  .zh-flavors__subheading {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.45);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  /* Grid */
+  .zh-flavors__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  /* Flavor Card */
+  .zh-flavor-card {
+    background: var(--flavor-accent, #1a1a1a);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s ease, border-color 0.25s ease;
+    cursor: pointer;
+  }
+
+  .zh-flavor-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .zh-flavor-card__image-wrap {
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.04) 0%,
+      rgba(0, 0, 0, 0.2) 100%
+    );
+  }
+
+  .zh-flavor-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    padding: 20px;
+    transition: transform 0.35s ease;
+    box-sizing: border-box;
+  }
+
+  .zh-flavor-card:hover .zh-flavor-card__img {
+    transform: scale(1.04);
+  }
+
+  .zh-flavor-card__body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+  }
+
+  .zh-flavor-card__rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .zh-flavor-card__rating .zh-stars {
+    font-size: 0.75rem;
+    color: #f5c842;
+  }
+
+  .zh-flavor-card__rating-val {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .zh-flavor-card__name {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(1.1rem, 1.5vw, 1.35rem);
+    text-transform: uppercase;
+    color: #ffffff;
+    margin: 0;
+    line-height: 1.1;
+    letter-spacing: 0.03em;
+  }
+
+  .zh-flavor-card__desc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8125rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .zh-flavor-card__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 11px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 4px;
+    color: #ffffff;
+    background: transparent;
+    transition: background 0.2s ease, border-color 0.2s ease;
+    margin-top: auto;
+  }
+
+  .zh-flavor-card__btn:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width: 1099px) {
+    .zh-flavors__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+  }
+
+  @media (max-width: 599px) {
+    .zh-flavors__grid {
+      grid-template-columns: 1fr;
+      max-width: 380px;
+      margin-inline: auto;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "ZH Product Flavors",
+  "tag": null,
+  "class": "shopify-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Limited First Production Run // Founders Batch"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Operational Loadout"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Select Your Flavor"
+    },
+    {
+      "type": "header",
+      "content": "Flavor 1 — Arctic Strike"
+    },
+    {
+      "type": "text",
+      "id": "flavor_1_name",
+      "label": "Name",
+      "default": "Arctic Strike"
+    },
+    {
+      "type": "text",
+      "id": "flavor_1_desc",
+      "label": "Description",
+      "default": "Crisp blue mint energy"
+    },
+    {
+      "type": "text",
+      "id": "flavor_1_btn",
+      "label": "Button label",
+      "default": "Select Loadout"
+    },
+    {
+      "type": "url",
+      "id": "flavor_1_url",
+      "label": "URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "flavor_1_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "flavor_1_fallback_url",
+      "label": "Fallback image URL",
+      "default": "https://framerusercontent.com/images/VYB58er7oMuxbccPLOJid1tNPc.png"
+    },
+    {
+      "type": "color",
+      "id": "flavor_1_accent",
+      "label": "Card background color",
+      "default": "#0d1a2e"
+    },
+    {
+      "type": "text",
+      "id": "flavor_1_rating",
+      "label": "Rating",
+      "default": "5.0"
+    },
+    {
+      "type": "header",
+      "content": "Flavor 2 — Mission Mango"
+    },
+    {
+      "type": "text",
+      "id": "flavor_2_name",
+      "label": "Name",
+      "default": "Mission Mango"
+    },
+    {
+      "type": "text",
+      "id": "flavor_2_desc",
+      "label": "Description",
+      "default": "Bold tropical energy"
+    },
+    {
+      "type": "text",
+      "id": "flavor_2_btn",
+      "label": "Button label",
+      "default": "Select Loadout"
+    },
+    {
+      "type": "url",
+      "id": "flavor_2_url",
+      "label": "URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "flavor_2_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "flavor_2_fallback_url",
+      "label": "Fallback image URL",
+      "default": "https://framerusercontent.com/images/bZlfViXKI7pFso6oYbF3rFz5aQ.png"
+    },
+    {
+      "type": "color",
+      "id": "flavor_2_accent",
+      "label": "Card background color",
+      "default": "#1e1200"
+    },
+    {
+      "type": "text",
+      "id": "flavor_2_rating",
+      "label": "Rating",
+      "default": "5.0"
+    },
+    {
+      "type": "header",
+      "content": "Flavor 3 — Black Ops Berry"
+    },
+    {
+      "type": "text",
+      "id": "flavor_3_name",
+      "label": "Name",
+      "default": "Black Ops Berry"
+    },
+    {
+      "type": "text",
+      "id": "flavor_3_desc",
+      "label": "Description",
+      "default": "Dark berry performance"
+    },
+    {
+      "type": "text",
+      "id": "flavor_3_btn",
+      "label": "Button label",
+      "default": "Select Loadout"
+    },
+    {
+      "type": "url",
+      "id": "flavor_3_url",
+      "label": "URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "flavor_3_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "flavor_3_fallback_url",
+      "label": "Fallback image URL",
+      "default": "https://framerusercontent.com/images/ypttwFogGUSwoOD9jZxuzVUDM8.png"
+    },
+    {
+      "type": "color",
+      "id": "flavor_3_accent",
+      "label": "Card background color",
+      "default": "#160d20"
+    },
+    {
+      "type": "text",
+      "id": "flavor_3_rating",
+      "label": "Rating",
+      "default": "5.0"
+    },
+    {
+      "type": "header",
+      "content": "Flavor 4 — Tactical Citrus"
+    },
+    {
+      "type": "text",
+      "id": "flavor_4_name",
+      "label": "Name",
+      "default": "Tactical Citrus"
+    },
+    {
+      "type": "text",
+      "id": "flavor_4_desc",
+      "label": "Description",
+      "default": "Sharp citrus focus"
+    },
+    {
+      "type": "text",
+      "id": "flavor_4_btn",
+      "label": "Button label",
+      "default": "Select Loadout"
+    },
+    {
+      "type": "url",
+      "id": "flavor_4_url",
+      "label": "URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "flavor_4_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "flavor_4_fallback_url",
+      "label": "Fallback image URL",
+      "default": "https://framerusercontent.com/images/uEWpA90LX9drlNbHEv0qrICjD9E.png"
+    },
+    {
+      "type": "color",
+      "id": "flavor_4_accent",
+      "label": "Card background color",
+      "default": "#0d1a0d"
+    },
+    {
+      "type": "text",
+      "id": "flavor_4_rating",
+      "label": "Rating",
+      "default": "5.0"
+    }
+  ],
+  "presets": [
+    {
+      "name": "ZH Product Flavors",
+      "settings": {
+        "eyebrow": "Limited First Production Run // Founders Batch",
+        "heading": "Operational Loadout",
+        "subheading": "Select Your Flavor",
+        "flavor_1_name": "Arctic Strike",
+        "flavor_1_btn": "Select Loadout",
+        "flavor_1_rating": "5.0",
+        "flavor_2_name": "Mission Mango",
+        "flavor_2_btn": "Select Loadout",
+        "flavor_2_rating": "5.0",
+        "flavor_3_name": "Black Ops Berry",
+        "flavor_3_btn": "Select Loadout",
+        "flavor_3_rating": "5.0",
+        "flavor_4_name": "Tactical Citrus",
+        "flavor_4_btn": "Select Loadout",
+        "flavor_4_rating": "5.0"
+      }
+    }
+  ]
+}
+{% endschema %}

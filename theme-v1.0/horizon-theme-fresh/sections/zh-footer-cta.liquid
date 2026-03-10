@@ -1,0 +1,181 @@
+{% comment %}
+  ZH Footer CTA Section
+  "WHEN IT'S ZERO HOUR BE READY." — Full-bleed dramatic hero-CTA
+  FILE: sections/zh-footer-cta.liquid
+{% endcomment %}
+
+<section
+  class="zh-section zh-footer-cta"
+  id="zh-footer-cta-{{ section.id }}"
+>
+  {%- comment %} Background image {%- endcomment %}
+  <div class="zh-footer-cta__bg">
+    {%- if section.settings.bg_image != blank -%}
+      <img
+        src="{{ section.settings.bg_image | image_url: width: 2400 }}"
+        alt=""
+        role="presentation"
+        loading="lazy"
+        width="2400"
+        height="1200"
+      >
+    {%- else -%}
+      <img
+        src="{{ section.settings.fallback_bg_url }}"
+        alt=""
+        role="presentation"
+        loading="lazy"
+        width="2400"
+        height="1200"
+      >
+    {%- endif -%}
+    <div class="zh-footer-cta__overlay"></div>
+  </div>
+
+  <div class="zh-container zh-footer-cta__inner">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="zh-footer-cta__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    {%- if section.settings.cta_label != blank -%}
+      <a
+        href="{{ section.settings.cta_url | default: '#' }}"
+        class="zh-btn zh-btn--primary zh-footer-cta__btn"
+      >
+        {{ section.settings.cta_label }}
+      </a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  /* ============================================================
+     ZH FOOTER CTA SECTION
+     ============================================================ */
+  .zh-footer-cta {
+    background-color: #0b0b0b;
+    position: relative;
+    overflow: hidden;
+    min-height: clamp(360px, 40vw, 600px);
+    display: flex;
+    align-items: flex-end;
+  }
+
+  /* Background image */
+  .zh-footer-cta__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .zh-footer-cta__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+    filter: brightness(0.5) contrast(1.1);
+  }
+
+  .zh-footer-cta__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(11, 11, 11, 0.9) 0%,
+      rgba(11, 11, 11, 0.3) 60%,
+      rgba(11, 11, 11, 0.1) 100%
+    );
+  }
+
+  /* Content */
+  .zh-footer-cta__inner {
+    position: relative;
+    z-index: 1;
+    padding-block: clamp(60px, 8vw, 100px);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 28px;
+  }
+
+  .zh-footer-cta__heading {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(3rem, 9vw, 10rem);
+    line-height: 0.95;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin: 0;
+    letter-spacing: -0.02em;
+    max-width: 900px;
+  }
+
+  .zh-footer-cta__btn {
+    font-size: 0.875rem;
+    padding: 16px 40px;
+    letter-spacing: 0.12em;
+  }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width: 749px) {
+    .zh-footer-cta__heading {
+      font-size: clamp(2.5rem, 12vw, 5rem);
+    }
+
+    .zh-footer-cta__inner {
+      align-items: flex-start;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "ZH Footer CTA",
+  "tag": null,
+  "class": "shopify-section",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "When It's Zero Hour Be Ready."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA button label",
+      "default": "Pre-Order Now"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA button link"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background image"
+    },
+    {
+      "type": "text",
+      "id": "fallback_bg_url",
+      "label": "Fallback BG URL",
+      "default": "https://framerusercontent.com/images/7BGiDgI8uOaNBQdd8ppgCKaJty0.jpg"
+    }
+  ],
+  "presets": [
+    {
+      "name": "ZH Footer CTA",
+      "settings": {
+        "heading": "When It's Zero Hour Be Ready.",
+        "cta_label": "Pre-Order Now"
+      }
+    }
+  ]
+}
+{% endschema %}

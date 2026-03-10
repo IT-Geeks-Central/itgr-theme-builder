@@ -1,0 +1,477 @@
+{% comment %}
+  ZH Hero Section
+  "FUEL WHEN IT MATTERS" — Full-width hero with split content/image layout
+  FILE: sections/zh-hero.liquid
+{% endcomment %}
+
+<section
+  class="zh-section zh-hero"
+  id="zh-hero-{{ section.id }}"
+  style="
+    --hero-min-height: {{ section.settings.min_height }}px;
+    --hero-overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+  "
+>
+  {%- if section.settings.background_image != blank -%}
+    <div class="zh-hero__bg-image">
+      <img
+        src="{{ section.settings.background_image | image_url: width: 1920 }}"
+        alt=""
+        role="presentation"
+        loading="eager"
+        fetchpriority="high"
+        width="1920"
+        height="1080"
+      >
+    </div>
+  {%- else -%}
+    <div class="zh-hero__bg-image">
+      <img
+        src="{{ section.settings.fallback_bg_url }}"
+        alt=""
+        role="presentation"
+        loading="eager"
+        fetchpriority="high"
+        width="1920"
+        height="1080"
+      >
+    </div>
+  {%- endif -%}
+  <div class="zh-hero__overlay"></div>
+
+  <div class="zh-container zh-hero__inner">
+    {%- comment %} Left: Text content {%- endcomment %}
+    <div class="zh-hero__content">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="zh-eyebrow zh-hero__eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.heading != blank -%}
+        <h1 class="zh-hero__heading">{{ section.settings.heading }}</h1>
+      {%- endif -%}
+
+      {%- if section.settings.subheading != blank -%}
+        <p class="zh-hero__subheading">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+
+      <div class="zh-hero__badges">
+        {%- if section.settings.badge_1 != blank -%}
+          <span class="zh-hero__badge">{{ section.settings.badge_1 }}</span>
+        {%- endif -%}
+        {%- if section.settings.badge_2 != blank -%}
+          <span class="zh-hero__badge">{{ section.settings.badge_2 }}</span>
+        {%- endif -%}
+      </div>
+
+      <div class="zh-hero__ctas">
+        {%- if section.settings.cta_primary_label != blank -%}
+          <a
+            href="{{ section.settings.cta_primary_url | default: '#' }}"
+            class="zh-btn zh-btn--primary zh-hero__cta-primary"
+          >
+            {{ section.settings.cta_primary_label }}
+          </a>
+        {%- endif -%}
+        {%- if section.settings.cta_secondary_label != blank -%}
+          <a
+            href="{{ section.settings.cta_secondary_url | default: '#' }}"
+            class="zh-btn zh-btn--outline zh-hero__cta-secondary"
+          >
+            {{ section.settings.cta_secondary_label }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment %} Right: Product image {%- endcomment %}
+    <div class="zh-hero__media">
+      {%- if section.settings.hero_image != blank -%}
+        <img
+          src="{{ section.settings.hero_image | image_url: width: 900 }}"
+          alt="{{ section.settings.hero_image.alt | default: section.settings.heading }}"
+          loading="eager"
+          fetchpriority="high"
+          width="900"
+          height="1200"
+          class="zh-hero__product-img"
+        >
+      {%- else -%}
+        <img
+          src="{{ section.settings.fallback_hero_image_url }}"
+          alt="{{ section.settings.heading }}"
+          loading="eager"
+          fetchpriority="high"
+          width="900"
+          height="1200"
+          class="zh-hero__product-img"
+        >
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- comment %} Bottom gradient fade {%- endcomment %}
+  <div class="zh-hero__bottom-fade"></div>
+</section>
+
+{% stylesheet %}
+  /* ============================================================
+     ZH HERO SECTION
+     ============================================================ */
+  .zh-hero {
+    position: relative;
+    min-height: var(--hero-min-height, 90vh);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    background-color: #0b0b0b;
+  }
+
+  /* Background image */
+  .zh-hero__bg-image {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .zh-hero__bg-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    filter: brightness(0.45);
+  }
+
+  /* Dark overlay */
+  .zh-hero__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      105deg,
+      rgba(11, 11, 11, 0.92) 0%,
+      rgba(11, 11, 11, 0.6) 50%,
+      rgba(11, 11, 11, 0.1) 100%
+    );
+  }
+
+  /* Bottom fade */
+  .zh-hero__bottom-fade {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: linear-gradient(to bottom, transparent, #0b0b0b);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* Inner layout: side by side */
+  .zh-hero__inner {
+    position: relative;
+    z-index: 3;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: clamp(40px, 5vw, 80px);
+    padding-block: clamp(100px, 12vw, 160px);
+  }
+
+  /* Left content */
+  .zh-hero__content {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(16px, 2vw, 24px);
+  }
+
+  .zh-hero__eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+  }
+
+  .zh-hero__heading {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(3.5rem, 7vw, 8rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin: 0;
+    word-break: break-word;
+  }
+
+  .zh-hero__subheading {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    font-weight: 400;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.65);
+    max-width: 460px;
+    margin: 0;
+  }
+
+  /* Badges row */
+  .zh-hero__badges {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .zh-hero__badge {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 6px 14px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+
+  /* CTAs */
+  .zh-hero__ctas {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+
+  .zh-hero__cta-primary {
+    background: #ffffff;
+    color: #0b0b0b;
+    border-color: #ffffff;
+    font-size: 0.875rem;
+    padding: 14px 32px;
+  }
+
+  .zh-hero__cta-primary:hover {
+    background: #e8e8e8;
+  }
+
+  .zh-hero__cta-secondary {
+    background: transparent;
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.5);
+    font-size: 0.875rem;
+    padding: 14px 32px;
+  }
+
+  .zh-hero__cta-secondary:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.8);
+  }
+
+  /* Right media */
+  .zh-hero__media {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    position: relative;
+    height: 100%;
+  }
+
+  .zh-hero__product-img {
+    width: 100%;
+    max-width: 560px;
+    height: auto;
+    object-fit: contain;
+    object-position: bottom center;
+    filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.6));
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width: 899px) {
+    .zh-hero__inner {
+      grid-template-columns: 1fr;
+      padding-block: clamp(80px, 10vw, 120px);
+      gap: 40px;
+    }
+
+    .zh-hero__media {
+      order: -1;
+      max-height: 360px;
+      overflow: hidden;
+    }
+
+    .zh-hero__product-img {
+      max-width: 340px;
+      max-height: 360px;
+    }
+
+    .zh-hero__heading {
+      font-size: clamp(3rem, 10vw, 5rem);
+    }
+
+    .zh-hero__subheading {
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 479px) {
+    .zh-hero {
+      min-height: 100svh;
+    }
+
+    .zh-hero__heading {
+      font-size: clamp(2.5rem, 12vw, 4rem);
+    }
+
+    .zh-hero__ctas {
+      flex-direction: column;
+    }
+
+    .zh-hero__cta-primary,
+    .zh-hero__cta-secondary {
+      width: 100%;
+      text-align: center;
+      justify-content: center;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "ZH Hero",
+  "tag": null,
+  "class": "shopify-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Veteran Owned & Operated"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Fuel When It Matters"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Performance Energy Built for Operators Under Pressure."
+    },
+    {
+      "type": "text",
+      "id": "badge_1",
+      "label": "Badge 1",
+      "default": "Veteran Owned"
+    },
+    {
+      "type": "text",
+      "id": "badge_2",
+      "label": "Badge 2",
+      "default": "Zero Sugar"
+    },
+    {
+      "type": "header",
+      "content": "Buttons"
+    },
+    {
+      "type": "text",
+      "id": "cta_primary_label",
+      "label": "Primary CTA label",
+      "default": "Pre-Order Now"
+    },
+    {
+      "type": "url",
+      "id": "cta_primary_url",
+      "label": "Primary CTA link"
+    },
+    {
+      "type": "text",
+      "id": "cta_secondary_label",
+      "label": "Secondary CTA label",
+      "default": "Explore Mission"
+    },
+    {
+      "type": "url",
+      "id": "cta_secondary_url",
+      "label": "Secondary CTA link"
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "text",
+      "id": "fallback_bg_url",
+      "label": "Fallback BG URL (Framer CDN)",
+      "default": "https://framerusercontent.com/images/Fuc0CHp4CGwahWlDjAVMhNGTNKQ.png"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero product image"
+    },
+    {
+      "type": "text",
+      "id": "fallback_hero_image_url",
+      "label": "Fallback hero image URL (Framer CDN)",
+      "default": "https://framerusercontent.com/images/bzluHiLnC5Sy9mKjWjOYRLR2oAA.png"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "min_height",
+      "label": "Min height (px)",
+      "min": 400,
+      "max": 1200,
+      "step": 20,
+      "default": 860,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 60,
+      "unit": "%"
+    }
+  ],
+  "presets": [
+    {
+      "name": "ZH Hero",
+      "settings": {
+        "eyebrow": "Veteran Owned & Operated",
+        "heading": "Fuel When It Matters",
+        "subheading": "Performance Energy Built for Operators Under Pressure.",
+        "badge_1": "Veteran Owned",
+        "badge_2": "Zero Sugar",
+        "cta_primary_label": "Pre-Order Now",
+        "cta_secondary_label": "Explore Mission"
+      }
+    }
+  ]
+}
+{% endschema %}

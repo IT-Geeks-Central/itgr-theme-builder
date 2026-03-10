@@ -1,0 +1,291 @@
+/* ==========================================================================
+   ZERO HOUR DRINK — Global Brand CSS
+   Loaded globally via theme.liquid
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Google Fonts — Anton + DM Sans
+   -------------------------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
+
+/* --------------------------------------------------------------------------
+   2. Brand CSS Variables
+   -------------------------------------------------------------------------- */
+:root {
+  /* Brand Fonts */
+  --zh-font-display: 'Anton', sans-serif;
+  --zh-font-body: 'DM Sans', sans-serif;
+
+  /* Brand Colors */
+  --zh-bg-primary: #0b0b0b;
+  --zh-bg-surface: #1c1c1c;
+  --zh-bg-card: #141414;
+  --zh-bg-card-hover: #202020;
+  --zh-text-white: #ffffff;
+  --zh-text-muted: rgba(255, 255, 255, 0.6);
+  --zh-text-subdued: rgba(255, 255, 255, 0.4);
+  --zh-accent-green: #2f3a2f;
+  --zh-accent-warm: #feeeea;
+  --zh-accent-blue: rgb(0, 153, 255);
+  --zh-border: rgba(255, 255, 255, 0.12);
+  --zh-border-strong: rgba(255, 255, 255, 0.25);
+  --zh-overlay-dark: rgba(11, 11, 11, 0.75);
+  --zh-overlay-mid: rgba(11, 11, 11, 0.5);
+
+  /* Brand Buttons */
+  --zh-btn-primary-bg: #ffffff;
+  --zh-btn-primary-text: #0b0b0b;
+  --zh-btn-primary-hover-bg: #e8e8e8;
+  --zh-btn-secondary-border: rgba(255, 255, 255, 0.6);
+  --zh-btn-secondary-text: #ffffff;
+  --zh-btn-secondary-hover-bg: rgba(255, 255, 255, 0.08);
+
+  /* Section Spacing */
+  --zh-section-padding-y: clamp(60px, 8vw, 120px);
+  --zh-section-padding-x: clamp(20px, 5vw, 80px);
+  --zh-container-max: 1200px;
+  --zh-container-wide: 1400px;
+
+  /* Typography Scale */
+  --zh-display-xl: clamp(3.5rem, 8vw, 9rem);
+  --zh-display-lg: clamp(2.5rem, 6vw, 6rem);
+  --zh-display-md: clamp(2rem, 4vw, 4rem);
+  --zh-heading-xl: clamp(2rem, 4vw, 3.5rem);
+  --zh-heading-lg: clamp(1.5rem, 3vw, 2.5rem);
+  --zh-heading-md: clamp(1.25rem, 2vw, 1.75rem);
+  --zh-body-lg: 1.125rem;
+  --zh-body-md: 1rem;
+  --zh-body-sm: 0.875rem;
+  --zh-label: 0.75rem;
+}
+
+/* --------------------------------------------------------------------------
+   3. Global Reset / Base for ZH Sections
+   -------------------------------------------------------------------------- */
+.zh-section {
+  background-color: var(--zh-bg-primary);
+  color: var(--zh-text-white);
+  font-family: var(--zh-font-body);
+}
+
+.zh-container {
+  max-width: var(--zh-container-max);
+  margin-inline: auto;
+  padding-inline: clamp(20px, 5vw, 60px);
+  width: 100%;
+}
+
+.zh-container--wide {
+  max-width: var(--zh-container-wide);
+  margin-inline: auto;
+  padding-inline: clamp(20px, 4vw, 60px);
+  width: 100%;
+}
+
+.zh-container--full {
+  width: 100%;
+  padding-inline: 0;
+}
+
+/* --------------------------------------------------------------------------
+   4. Brand Typography Utilities
+   -------------------------------------------------------------------------- */
+.zh-heading-display {
+  font-family: var(--zh-font-display);
+  font-size: var(--zh-display-lg);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--zh-text-white);
+  margin: 0;
+}
+
+.zh-heading-xl {
+  font-family: var(--zh-font-display);
+  font-size: var(--zh-heading-xl);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--zh-text-white);
+  margin: 0;
+}
+
+.zh-heading-lg {
+  font-family: var(--zh-font-display);
+  font-size: var(--zh-heading-lg);
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: var(--zh-text-white);
+  margin: 0;
+}
+
+.zh-eyebrow {
+  font-family: var(--zh-font-body);
+  font-size: var(--zh-label);
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--zh-text-muted);
+  margin: 0;
+}
+
+.zh-body {
+  font-family: var(--zh-font-body);
+  font-size: var(--zh-body-md);
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--zh-text-muted);
+  margin: 0;
+}
+
+.zh-body--lg {
+  font-size: var(--zh-body-lg);
+}
+
+/* --------------------------------------------------------------------------
+   5. Brand Button Utilities
+   -------------------------------------------------------------------------- */
+.zh-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--zh-font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 14px 28px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.zh-btn--primary {
+  background: var(--zh-btn-primary-bg);
+  color: var(--zh-btn-primary-text);
+  border: 1px solid var(--zh-btn-primary-bg);
+}
+
+.zh-btn--primary:hover {
+  background: var(--zh-btn-primary-hover-bg);
+  color: var(--zh-btn-primary-text);
+}
+
+.zh-btn--outline {
+  background: transparent;
+  color: var(--zh-btn-secondary-text);
+  border: 1px solid var(--zh-btn-secondary-border);
+}
+
+.zh-btn--outline:hover {
+  background: var(--zh-btn-secondary-hover-bg);
+  border-color: var(--zh-text-white);
+  color: var(--zh-text-white);
+}
+
+.zh-btn--dark {
+  background: var(--zh-bg-primary);
+  color: var(--zh-text-white);
+  border: 1px solid var(--zh-border);
+}
+
+.zh-btn--dark:hover {
+  background: var(--zh-bg-surface);
+  border-color: var(--zh-border-strong);
+}
+
+/* --------------------------------------------------------------------------
+   6. Section Header Utility (eyebrow + heading + subtitle)
+   -------------------------------------------------------------------------- */
+.zh-section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+}
+
+.zh-section-header--left {
+  text-align: left;
+}
+
+.zh-section-header .zh-eyebrow {
+  margin-bottom: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   7. Divider / Separator
+   -------------------------------------------------------------------------- */
+.zh-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--zh-border);
+  margin: 0;
+  border: none;
+}
+
+/* --------------------------------------------------------------------------
+   8. Card Base
+   -------------------------------------------------------------------------- */
+.zh-card {
+  background: var(--zh-bg-surface);
+  border: 1px solid var(--zh-border);
+  border-radius: 6px;
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+}
+
+.zh-card:hover {
+  border-color: var(--zh-border-strong);
+}
+
+/* --------------------------------------------------------------------------
+   9. Star Rating Utility
+   -------------------------------------------------------------------------- */
+.zh-stars {
+  display: inline-flex;
+  gap: 2px;
+  color: #f5c842;
+  font-size: 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   10. Responsive Utilities
+   -------------------------------------------------------------------------- */
+@media (max-width: 749px) {
+  .zh-hide-mobile {
+    display: none !important;
+  }
+}
+
+@media (min-width: 750px) {
+  .zh-hide-desktop {
+    display: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   11. Background Texture Overlay (dark grain effect)
+   -------------------------------------------------------------------------- */
+.zh-texture-overlay {
+  position: relative;
+}
+
+.zh-texture-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.zh-texture-overlay > * {
+  position: relative;
+  z-index: 1;
+}

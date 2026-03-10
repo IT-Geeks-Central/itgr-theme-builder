@@ -1,0 +1,179 @@
+{% comment %}
+  ZH Product Showcase Section
+  Full-width dramatic can mosaic/lineup image
+  FILE: sections/zh-product-showcase.liquid
+{% endcomment %}
+
+<section
+  class="zh-section zh-showcase"
+  id="zh-showcase-{{ section.id }}"
+>
+  <div class="zh-showcase__top-fade"></div>
+
+  <div class="zh-showcase__image-wrap">
+    {%- if section.settings.showcase_image != blank -%}
+      <img
+        src="{{ section.settings.showcase_image | image_url: width: 2400 }}"
+        alt="{{ section.settings.showcase_image.alt | default: 'Zero Hour Drink product lineup' }}"
+        loading="lazy"
+        width="2400"
+        height="1300"
+        class="zh-showcase__img"
+      >
+    {%- else -%}
+      <img
+        src="{{ section.settings.fallback_image_url }}"
+        alt="Zero Hour Drink product lineup"
+        loading="lazy"
+        width="2400"
+        height="1300"
+        class="zh-showcase__img"
+      >
+    {%- endif -%}
+    <div class="zh-showcase__overlay"></div>
+  </div>
+
+  {%- if section.settings.show_flavor_labels -%}
+    <div class="zh-container zh-showcase__labels">
+      {%- assign flavors = "Arctic Strike,Mission Mango,Black Ops Berry,Tactical Citrus" | split: "," -%}
+      {%- for flavor in flavors -%}
+        <span class="zh-showcase__label">{{ flavor }}</span>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  <div class="zh-showcase__bottom-fade"></div>
+</section>
+
+{% stylesheet %}
+  /* ============================================================
+     ZH PRODUCT SHOWCASE SECTION
+     ============================================================ */
+  .zh-showcase {
+    background-color: #0b0b0b;
+    position: relative;
+    overflow: hidden;
+    margin-block: 0;
+  }
+
+  .zh-showcase__top-fade {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: linear-gradient(to bottom, #0b0b0b, transparent);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .zh-showcase__bottom-fade {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: linear-gradient(to top, #0b0b0b, transparent);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .zh-showcase__image-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 21/9;
+    min-height: 360px;
+  }
+
+  .zh-showcase__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  .zh-showcase__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(11, 11, 11, 0.3) 0%,
+      rgba(11, 11, 11, 0.1) 50%,
+      rgba(11, 11, 11, 0.3) 100%
+    );
+  }
+
+  /* Flavor labels bar */
+  .zh-showcase__labels {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    gap: 0;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding-block: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .zh-showcase__label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.45);
+    padding: 4px 24px;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .zh-showcase__label:last-child {
+    border-right: none;
+  }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width: 749px) {
+    .zh-showcase__image-wrap {
+      aspect-ratio: 4/3;
+    }
+
+    .zh-showcase__labels {
+      display: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "ZH Product Showcase",
+  "tag": null,
+  "class": "shopify-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "showcase_image",
+      "label": "Showcase image (product lineup)"
+    },
+    {
+      "type": "text",
+      "id": "fallback_image_url",
+      "label": "Fallback image URL",
+      "default": "https://framerusercontent.com/images/lsmHwqZ5gDn2ISZs8huBHLwThA.jpg"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_flavor_labels",
+      "label": "Show flavor labels bar",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "ZH Product Showcase"
+    }
+  ]
+}
+{% endschema %}

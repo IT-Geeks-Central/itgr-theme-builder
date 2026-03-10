@@ -1,0 +1,390 @@
+{% comment %}
+  ZH FAQ Section — "FREQUENTLY ASKED QUESTIONS"
+  Accordion items with smooth open/close
+  FILE: sections/zh-faq.liquid
+{% endcomment %}
+
+<section
+  class="zh-section zh-faq"
+  id="zh-faq-{{ section.id }}"
+>
+  {%- if section.settings.bg_image != blank or section.settings.fallback_bg_url != blank -%}
+    <div class="zh-faq__bg">
+      {%- if section.settings.bg_image != blank -%}
+        <img
+          src="{{ section.settings.bg_image | image_url: width: 1600 }}"
+          alt=""
+          role="presentation"
+          loading="lazy"
+          width="1600"
+          height="900"
+        >
+      {%- else -%}
+        <img
+          src="{{ section.settings.fallback_bg_url }}"
+          alt=""
+          role="presentation"
+          loading="lazy"
+          width="1600"
+          height="900"
+        >
+      {%- endif -%}
+      <div class="zh-faq__bg-overlay"></div>
+    </div>
+  {%- endif -%}
+
+  <div class="zh-container zh-faq__inner">
+    {%- comment %} Left: Header {%- endcomment %}
+    <div class="zh-faq__header">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="zh-eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="zh-faq__heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p class="zh-faq__subheading">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+      {%- if section.settings.support_label != blank -%}
+        <a
+          href="{{ section.settings.support_url | default: '#' }}"
+          class="zh-btn zh-btn--outline zh-faq__support-btn"
+        >
+          {{ section.settings.support_label }}
+        </a>
+      {%- endif -%}
+    </div>
+
+    {%- comment %} Right: Accordion {%- endcomment %}
+    <div class="zh-faq__accordion">
+      {%- for i in (1..8) -%}
+        {%- liquid
+          assign q_key = 'faq_' | append: i | append: '_question'
+          assign a_key = 'faq_' | append: i | append: '_answer'
+          assign q = section.settings[q_key]
+          assign a = section.settings[a_key]
+        -%}
+        {%- if q != blank -%}
+          <details class="zh-faq__item" {% if i == 1 %}open{% endif %}>
+            <summary class="zh-faq__question">
+              <span class="zh-faq__question-text">{{ q }}</span>
+              <span class="zh-faq__toggle" aria-hidden="true">
+                <svg class="zh-faq__toggle-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </summary>
+            {%- if a != blank -%}
+              <div class="zh-faq__answer">
+                <div class="zh-faq__answer-inner">
+                  {{ a }}
+                </div>
+              </div>
+            {%- endif -%}
+          </details>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  /* ============================================================
+     ZH FAQ SECTION
+     ============================================================ */
+  .zh-faq {
+    background-color: #0b0b0b;
+    padding-block: clamp(60px, 8vw, 100px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Background image */
+  .zh-faq__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .zh-faq__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: brightness(0.15) saturate(0.3);
+  }
+
+  .zh-faq__bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(11, 11, 11, 0.75);
+  }
+
+  .zh-faq__inner {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: clamp(40px, 6vw, 100px);
+    align-items: start;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Left header */
+  .zh-faq__header {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    position: sticky;
+    top: 80px;
+  }
+
+  .zh-faq__heading {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    line-height: 1;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin: 0;
+  }
+
+  .zh-faq__subheading {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9375rem;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .zh-faq__support-btn {
+    width: fit-content;
+    font-size: 0.8125rem;
+    padding: 11px 24px;
+  }
+
+  /* Accordion */
+  .zh-faq__accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .zh-faq__item {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .zh-faq__item:first-child {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .zh-faq__question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-block: 22px;
+    cursor: pointer;
+    list-style: none;
+    transition: color 0.2s ease;
+  }
+
+  .zh-faq__question::-webkit-details-marker {
+    display: none;
+  }
+
+  .zh-faq__question:hover .zh-faq__question-text {
+    color: #ffffff;
+  }
+
+  .zh-faq__question-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.4;
+    transition: color 0.2s ease;
+  }
+
+  .zh-faq__toggle {
+    flex-shrink: 0;
+    color: rgba(255, 255, 255, 0.4);
+    transition: transform 0.2s ease;
+  }
+
+  .zh-faq__toggle-icon {
+    display: block;
+  }
+
+  .zh-faq__item[open] .zh-faq__toggle {
+    transform: rotate(180deg);
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .zh-faq__item[open] .zh-faq__question-text {
+    color: #ffffff;
+  }
+
+  .zh-faq__answer {
+    overflow: hidden;
+  }
+
+  .zh-faq__answer-inner {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.55);
+    padding-bottom: 22px;
+  }
+
+  .zh-faq__answer-inner p {
+    margin: 0;
+  }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width: 899px) {
+    .zh-faq__inner {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .zh-faq__header {
+      position: static;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "ZH FAQ",
+  "tag": null,
+  "class": "shopify-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "We've covered the most common topics below."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Still need help? Reach out anytime."
+    },
+    {
+      "type": "text",
+      "id": "support_label",
+      "label": "Support button label",
+      "default": "Contact Support"
+    },
+    {
+      "type": "url",
+      "id": "support_url",
+      "label": "Support button link"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background image"
+    },
+    {
+      "type": "text",
+      "id": "fallback_bg_url",
+      "label": "Fallback BG URL",
+      "default": "https://framerusercontent.com/images/hmrID4xOfrKpvSXTq5Ak9OvB2ZI.jpg"
+    },
+    {
+      "type": "header",
+      "content": "FAQ Items"
+    },
+    {
+      "type": "text",
+      "id": "faq_1_question",
+      "label": "Question 1",
+      "default": "How much caffeine is in each can?"
+    },
+    {
+      "type": "richtext",
+      "id": "faq_1_answer",
+      "label": "Answer 1",
+      "default": "<p>Each can of Zero Hour Drink contains 200mg of natural caffeine sourced from Green Tea Extract — no synthetic stimulants, no energy spikes, just clean sustained focus.</p>"
+    },
+    {
+      "type": "text",
+      "id": "faq_2_question",
+      "label": "Question 2",
+      "default": "When will my order ship?"
+    },
+    {
+      "type": "richtext",
+      "id": "faq_2_answer",
+      "label": "Answer 2",
+      "default": "<p>Zero Hour Drink ships Q1 2026. Founders batch pre-orders are processed first. You will not be charged until your order ships.</p>"
+    },
+    {
+      "type": "text",
+      "id": "faq_3_question",
+      "label": "Question 3",
+      "default": "Is there any sugar or artificial junk?"
+    },
+    {
+      "type": "richtext",
+      "id": "faq_3_answer",
+      "label": "Answer 3",
+      "default": "<p>Zero Hour Drink contains 0g sugar and zero artificial dyes, colors, or synthetic additives. Every ingredient is purposeful and performance-grade.</p>"
+    },
+    {
+      "type": "text",
+      "id": "faq_4_question",
+      "label": "Question 4",
+      "default": "Do you offer a military discount?"
+    },
+    {
+      "type": "richtext",
+      "id": "faq_4_answer",
+      "label": "Answer 4",
+      "default": "<p>Yes. Zero Hour Drink is veteran-owned and operated. We offer exclusive pricing for active military, veterans, and first responders. Contact us to verify eligibility.</p>"
+    },
+    {
+      "type": "text",
+      "id": "faq_5_question",
+      "label": "Question 5"
+    },
+    {
+      "type": "richtext",
+      "id": "faq_5_answer",
+      "label": "Answer 5"
+    },
+    {
+      "type": "text",
+      "id": "faq_6_question",
+      "label": "Question 6"
+    },
+    {
+      "type": "richtext",
+      "id": "faq_6_answer",
+      "label": "Answer 6"
+    }
+  ],
+  "presets": [
+    {
+      "name": "ZH FAQ"
+    }
+  ]
+}
+{% endschema %}

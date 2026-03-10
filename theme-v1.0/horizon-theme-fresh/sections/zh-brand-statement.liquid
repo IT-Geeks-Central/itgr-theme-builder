@@ -1,0 +1,166 @@
+{% comment %}
+  ZH Brand Statement Section
+  "SERVICE. INTEGRITY. DISCIPLINE." — Centered brand manifesto
+  FILE: sections/zh-brand-statement.liquid
+{% endcomment %}
+
+<section
+  class="zh-section zh-statement"
+  id="zh-statement-{{ section.id }}"
+>
+  <div class="zh-container">
+    <div class="zh-statement__inner">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="zh-eyebrow zh-statement__eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.heading != blank -%}
+        <h2 class="zh-statement__heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.body_text != blank -%}
+        <div class="zh-statement__body">
+          {{ section.settings.body_text }}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.cta_label != blank -%}
+        <a
+          href="{{ section.settings.cta_url | default: '#' }}"
+          class="zh-btn zh-btn--outline zh-statement__cta"
+        >
+          {{ section.settings.cta_label }}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  /* ============================================================
+     ZH BRAND STATEMENT SECTION
+     ============================================================ */
+  .zh-statement {
+    background-color: #0b0b0b;
+    padding-block: clamp(80px, 10vw, 140px);
+    position: relative;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .zh-statement::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 50%, rgba(47, 58, 47, 0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .zh-statement::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+  }
+
+  .zh-statement__inner {
+    position: relative;
+    max-width: 760px;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(16px, 2vw, 24px);
+  }
+
+  .zh-statement__eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0;
+  }
+
+  .zh-statement__heading {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 6rem);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    color: #ffffff;
+    margin: 0;
+  }
+
+  .zh-statement__body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.55);
+    max-width: 580px;
+  }
+
+  .zh-statement__body p {
+    margin: 0 0 0.5em;
+  }
+
+  .zh-statement__body p:last-child {
+    margin-bottom: 0;
+  }
+
+  .zh-statement__cta {
+    margin-top: 8px;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "ZH Brand Statement",
+  "tag": null,
+  "class": "shopify-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Veteran Owned & Operated"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Service. Integrity. Discipline."
+    },
+    {
+      "type": "richtext",
+      "id": "body_text",
+      "label": "Body text",
+      "default": "<p>We bring the same mindset from the field to our formula. No cutting corners. No compromising on quality. We built this for those who serve, those who protect, and those who build.</p>"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA label"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "ZH Brand Statement",
+      "settings": {
+        "eyebrow": "Veteran Owned & Operated",
+        "heading": "Service. Integrity. Discipline."
+      }
+    }
+  ]
+}
+{% endschema %}

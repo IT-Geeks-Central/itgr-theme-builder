@@ -1,0 +1,358 @@
+{% comment %}
+  ZH Instagram Grid Section
+  "@ZeroHourDrink" social media photo grid
+  FILE: sections/zh-instagram-grid.liquid
+{% endcomment %}
+
+<section
+  class="zh-section zh-instagram"
+  id="zh-instagram-{{ section.id }}"
+>
+  <div class="zh-container">
+    {%- comment %} Header {%- endcomment %}
+    <div class="zh-instagram__header">
+      {%- if section.settings.handle != blank -%}
+        <h2 class="zh-instagram__handle">
+          {%- if section.settings.profile_url != blank -%}
+            <a href="{{ section.settings.profile_url }}" target="_blank" rel="noopener" class="zh-instagram__handle-link">
+          {%- endif -%}
+          {{ section.settings.handle }}
+          {%- if section.settings.profile_url != blank -%}
+            </a>
+          {%- endif -%}
+        </h2>
+      {%- endif -%}
+      <div class="zh-instagram__social-icons">
+        {%- if section.settings.instagram_url != blank -%}
+          <a href="{{ section.settings.instagram_url }}" target="_blank" rel="noopener" class="zh-instagram__icon" aria-label="Instagram">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
+            </svg>
+          </a>
+        {%- endif -%}
+        {%- if section.settings.tiktok_url != blank -%}
+          <a href="{{ section.settings.tiktok_url }}" target="_blank" rel="noopener" class="zh-instagram__icon" aria-label="TikTok">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.29 6.29 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52v-3.4a4.85 4.85 0 01-1.01-.12z"/>
+            </svg>
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment %} Photo Grid {%- endcomment %}
+    <div class="zh-instagram__grid">
+      {%- for i in (1..5) -%}
+        {%- liquid
+          assign img_key = 'photo_' | append: i | append: '_image'
+          assign fallback_key = 'photo_' | append: i | append: '_fallback'
+          assign url_key = 'photo_' | append: i | append: '_url'
+
+          assign photo_img = section.settings[img_key]
+          assign photo_fallback = section.settings[fallback_key]
+          assign photo_url = section.settings[url_key]
+        -%}
+        {%- if photo_img != blank or photo_fallback != blank -%}
+          <a
+            href="{{ photo_url | default: section.settings.instagram_url | default: '#' }}"
+            target="_blank"
+            rel="noopener"
+            class="zh-instagram__photo"
+          >
+            {%- if photo_img != blank -%}
+              <img
+                src="{{ photo_img | image_url: width: 600 }}"
+                alt="{{ photo_img.alt | default: 'Zero Hour Drink Instagram' }}"
+                loading="lazy"
+                width="600"
+                height="600"
+              >
+            {%- elsif photo_fallback != blank -%}
+              <img
+                src="{{ photo_fallback }}"
+                alt="Zero Hour Drink Instagram"
+                loading="lazy"
+                width="600"
+                height="600"
+              >
+            {%- endif -%}
+            <div class="zh-instagram__photo-overlay">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="2" width="20" height="20" rx="5" stroke="white" stroke-width="1.5"/>
+                <circle cx="12" cy="12" r="4.5" stroke="white" stroke-width="1.5"/>
+                <circle cx="17.5" cy="6.5" r="1" fill="white"/>
+              </svg>
+            </div>
+          </a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  /* ============================================================
+     ZH INSTAGRAM GRID SECTION
+     ============================================================ */
+  .zh-instagram {
+    background-color: #0b0b0b;
+    padding-block: clamp(60px, 8vw, 100px);
+  }
+
+  .zh-instagram__header {
+    text-align: center;
+    margin-bottom: clamp(32px, 4vw, 52px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .zh-instagram__handle {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(1.75rem, 3.5vw, 3rem);
+    text-transform: uppercase;
+    color: #ffffff;
+    margin: 0;
+    line-height: 1;
+    letter-spacing: 0.03em;
+  }
+
+  .zh-instagram__handle-link {
+    color: inherit;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .zh-instagram__handle-link:hover {
+    opacity: 0.75;
+  }
+
+  .zh-instagram__social-icons {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .zh-instagram__icon {
+    color: rgba(255, 255, 255, 0.5);
+    transition: color 0.2s ease;
+    display: flex;
+    align-items: center;
+  }
+
+  .zh-instagram__icon:hover {
+    color: #ffffff;
+  }
+
+  /* Photo Grid */
+  .zh-instagram__grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+
+  .zh-instagram__photo {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 6px;
+    display: block;
+  }
+
+  .zh-instagram__photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .zh-instagram__photo:hover img {
+    transform: scale(1.06);
+  }
+
+  .zh-instagram__photo-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(11, 11, 11, 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease;
+    opacity: 0;
+  }
+
+  .zh-instagram__photo:hover .zh-instagram__photo-overlay {
+    background: rgba(11, 11, 11, 0.5);
+    opacity: 1;
+  }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width: 899px) {
+    .zh-instagram__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .zh-instagram__grid .zh-instagram__photo:nth-child(n+4) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 479px) {
+    .zh-instagram__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .zh-instagram__grid .zh-instagram__photo:nth-child(n+3) {
+      display: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "ZH Instagram Grid",
+  "tag": null,
+  "class": "shopify-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Handle & Links"
+    },
+    {
+      "type": "text",
+      "id": "handle",
+      "label": "Handle",
+      "default": "@ZeroHourDrink"
+    },
+    {
+      "type": "url",
+      "id": "profile_url",
+      "label": "Profile URL"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "tiktok_url",
+      "label": "TikTok URL"
+    },
+    {
+      "type": "header",
+      "content": "Photo 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "photo_1_image",
+      "label": "Photo 1"
+    },
+    {
+      "type": "text",
+      "id": "photo_1_fallback",
+      "label": "Fallback URL",
+      "default": "https://framerusercontent.com/images/HpeQbtsCjUgTtGcFW7ZhZe5LU.png"
+    },
+    {
+      "type": "url",
+      "id": "photo_1_url",
+      "label": "Photo 1 link"
+    },
+    {
+      "type": "header",
+      "content": "Photo 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "photo_2_image",
+      "label": "Photo 2"
+    },
+    {
+      "type": "text",
+      "id": "photo_2_fallback",
+      "label": "Fallback URL",
+      "default": "https://framerusercontent.com/images/oIILftlnZixYZ28qXfhBPbWaAI.jpg"
+    },
+    {
+      "type": "url",
+      "id": "photo_2_url",
+      "label": "Photo 2 link"
+    },
+    {
+      "type": "header",
+      "content": "Photo 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "photo_3_image",
+      "label": "Photo 3"
+    },
+    {
+      "type": "text",
+      "id": "photo_3_fallback",
+      "label": "Fallback URL",
+      "default": "https://framerusercontent.com/images/7BGiDgI8uOaNBQdd8ppgCKaJty0.jpg"
+    },
+    {
+      "type": "url",
+      "id": "photo_3_url",
+      "label": "Photo 3 link"
+    },
+    {
+      "type": "header",
+      "content": "Photo 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "photo_4_image",
+      "label": "Photo 4"
+    },
+    {
+      "type": "text",
+      "id": "photo_4_fallback",
+      "label": "Fallback URL",
+      "default": "https://framerusercontent.com/images/hmrID4xOfrKpvSXTq5Ak9OvB2ZI.jpg"
+    },
+    {
+      "type": "url",
+      "id": "photo_4_url",
+      "label": "Photo 4 link"
+    },
+    {
+      "type": "header",
+      "content": "Photo 5"
+    },
+    {
+      "type": "image_picker",
+      "id": "photo_5_image",
+      "label": "Photo 5"
+    },
+    {
+      "type": "text",
+      "id": "photo_5_fallback",
+      "label": "Fallback URL",
+      "default": "https://framerusercontent.com/images/7nt5OzYlBhNyN5smSapaXqBdMk.jpg"
+    },
+    {
+      "type": "url",
+      "id": "photo_5_url",
+      "label": "Photo 5 link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "ZH Instagram Grid",
+      "settings": {
+        "handle": "@ZeroHourDrink"
+      }
+    }
+  ]
+}
+{% endschema %}

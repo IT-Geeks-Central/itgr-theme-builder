@@ -1,0 +1,200 @@
+{% comment %}
+  ZH QR Code Brief Section
+  "STRENGTH BEYOND THE PHYSICAL." — QR code + scripture/mindset daily briefing
+  FILE: sections/zh-qr-brief.liquid
+{% endcomment %}
+
+<section
+  class="zh-section zh-qr"
+  id="zh-qr-{{ section.id }}"
+>
+  <div class="zh-container">
+    <div class="zh-qr__inner">
+      {%- comment %} QR Code {%- endcomment %}
+      <div class="zh-qr__code-wrap">
+        {%- if section.settings.qr_image != blank -%}
+          <img
+            src="{{ section.settings.qr_image | image_url: width: 320 }}"
+            alt="QR Code — Daily Briefing"
+            loading="lazy"
+            width="240"
+            height="240"
+            class="zh-qr__code-img"
+          >
+        {%- else -%}
+          <img
+            src="{{ section.settings.fallback_qr_url }}"
+            alt="QR Code — Daily Briefing"
+            loading="lazy"
+            width="240"
+            height="240"
+            class="zh-qr__code-img"
+          >
+        {%- endif -%}
+        {%- if section.settings.qr_scan_label != blank -%}
+          <p class="zh-qr__scan-label">{{ section.settings.qr_scan_label }}</p>
+        {%- endif -%}
+      </div>
+
+      {%- comment %} Content {%- endcomment %}
+      <div class="zh-qr__content">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="zh-eyebrow zh-qr__eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.heading != blank -%}
+          <h2 class="zh-qr__heading">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.body_text != blank -%}
+          <div class="zh-qr__body">
+            {{ section.settings.body_text }}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  /* ============================================================
+     ZH QR CODE BRIEF SECTION
+     ============================================================ */
+  .zh-qr {
+    background-color: #0b0b0b;
+    padding-block: clamp(60px, 8vw, 100px);
+    text-align: center;
+  }
+
+  .zh-qr__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(28px, 4vw, 48px);
+    max-width: 680px;
+    margin-inline: auto;
+  }
+
+  /* QR Code */
+  .zh-qr__code-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .zh-qr__code-img {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .zh-qr__scan-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0;
+  }
+
+  /* Content */
+  .zh-qr__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .zh-qr__eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0;
+  }
+
+  .zh-qr__heading {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(1.75rem, 3.5vw, 3.5rem);
+    line-height: 1.05;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin: 0;
+    text-align: center;
+  }
+
+  .zh-qr__body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.55);
+    max-width: 560px;
+    text-align: center;
+  }
+
+  .zh-qr__body p {
+    margin: 0 0 0.5em;
+  }
+
+  .zh-qr__body p:last-child {
+    margin-bottom: 0;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "ZH QR Brief",
+  "tag": null,
+  "class": "shopify-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Discipline in Action"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Strength Beyond The Physical."
+    },
+    {
+      "type": "richtext",
+      "id": "body_text",
+      "label": "Body text",
+      "default": "<p>True strength isn't just muscle; it's spirit. Every can features a dynamic QR code that unlocks a daily rotating scripture and mindset briefing. Ground yourself before the mission.</p>"
+    },
+    {
+      "type": "text",
+      "id": "qr_scan_label",
+      "label": "Scan label",
+      "default": "Scan for Daily Briefing"
+    },
+    {
+      "type": "image_picker",
+      "id": "qr_image",
+      "label": "QR code image"
+    },
+    {
+      "type": "text",
+      "id": "fallback_qr_url",
+      "label": "Fallback QR image URL",
+      "default": "https://framerusercontent.com/images/RavGPMJ69J3c9PrtecrcmmOrI.png"
+    }
+  ],
+  "presets": [
+    {
+      "name": "ZH QR Brief"
+    }
+  ]
+}
+{% endschema %}
