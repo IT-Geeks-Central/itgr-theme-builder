@@ -132,12 +132,12 @@
         "m1": {
           "type": "text",
           "settings": {
-            "text": "DARK BERRY",
+            "text": "<p>DARK BERRY</p>",
             "type_preset": "custom",
             "font": "var(--font-body--family)",
-            "font_size": "14px",
+            "font_size": "0.875rem",
             "line_height": "tight",
-            "letter_spacing": "wide",
+            "letter_spacing": "loose",
             "case": "uppercase",
             "wrap": "nowrap",
             "width": "fit-content"
@@ -149,12 +149,12 @@
         "m3": {
           "type": "text",
           "settings": {
-            "text": "CONTROLLED INTENSITY",
+            "text": "<p>CONTROLLED INTENSITY</p>",
             "type_preset": "custom",
             "font": "var(--font-body--family)",
-            "font_size": "14px",
+            "font_size": "0.875rem",
             "line_height": "tight",
-            "letter_spacing": "wide",
+            "letter_spacing": "loose",
             "case": "uppercase",
             "wrap": "nowrap",
             "width": "fit-content"
@@ -166,12 +166,12 @@
         "m5": {
           "type": "text",
           "settings": {
-            "text": "MISSION MANGO FRESH",
+            "text": "<p>MISSION MANGO FRESH</p>",
             "type_preset": "custom",
             "font": "var(--font-body--family)",
-            "font_size": "14px",
+            "font_size": "0.875rem",
             "line_height": "tight",
-            "letter_spacing": "wide",
+            "letter_spacing": "loose",
             "case": "uppercase",
             "wrap": "nowrap",
             "width": "fit-content"
@@ -183,12 +183,12 @@
         "m7": {
           "type": "text",
           "settings": {
-            "text": "TACTICAL CITRUS FRESH",
+            "text": "<p>TACTICAL CITRUS FRESH</p>",
             "type_preset": "custom",
             "font": "var(--font-body--family)",
-            "font_size": "14px",
+            "font_size": "0.875rem",
             "line_height": "tight",
-            "letter_spacing": "wide",
+            "letter_spacing": "loose",
             "case": "uppercase",
             "wrap": "nowrap",
             "width": "fit-content"
@@ -200,12 +200,12 @@
         "m9": {
           "type": "text",
           "settings": {
-            "text": "ARCTIC STRIKE",
+            "text": "<p>ARCTIC STRIKE</p>",
             "type_preset": "custom",
             "font": "var(--font-body--family)",
-            "font_size": "14px",
+            "font_size": "0.875rem",
             "line_height": "tight",
-            "letter_spacing": "wide",
+            "letter_spacing": "loose",
             "case": "uppercase",
             "wrap": "nowrap",
             "width": "fit-content"
